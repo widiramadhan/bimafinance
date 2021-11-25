@@ -1,11 +1,12 @@
 
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/locator.dart';
 import 'package:bima_finance/ui/view/splash_screen_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  //setupLocator();
+  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Taniqu',
+      title: 'Bima Finance',
       theme: ThemeData(
         primaryColor: colorPrimary,
         visualDensity: VisualDensity.adaptivePlatformDensity,

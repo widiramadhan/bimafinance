@@ -4,6 +4,7 @@ import 'package:bima_finance/ui/view/credit_apply.dart';
 import 'package:bima_finance/ui/view/credit_simulation_view.dart';
 import 'package:bima_finance/ui/view/job_view.dart';
 import 'package:bima_finance/ui/view/news_view.dart';
+import 'package:bima_finance/ui/view/ocr_guide_view.dart';
 import 'package:bima_finance/ui/view/payment_view.dart';
 import 'package:bima_finance/ui/view/product_view.dart';
 import 'package:bima_finance/ui/view/promo_view.dart';
@@ -313,7 +314,7 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CreditApplyView(),
+                                builder: (context) => OCRGuideView(),
                               ),
                             );
                           }, context),
