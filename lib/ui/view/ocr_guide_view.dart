@@ -1,5 +1,5 @@
 import 'package:bima_finance/core/constant/app_color.dart';
-import 'package:bima_finance/ui/view/credit_apply.dart';
+import 'package:bima_finance/ui/view/credit_apply_view.dart';
 import 'package:bima_finance/ui/view/ocr_view.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
 import 'package:bima_finance/ui/widget/textfield_widget.dart';
@@ -16,6 +16,8 @@ class OCRGuideView extends StatefulWidget {
 }
 
 class _OCRGuideViewState extends State<OCRGuideView> {
+  bool isLogin = false;
+  bool checked = false;
 
   @override
   void initState() {
@@ -24,8 +26,7 @@ class _OCRGuideViewState extends State<OCRGuideView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("Panduan OCR", style: TextStyle(color: colorPrimary),),
           centerTitle: true,
@@ -63,7 +64,7 @@ class _OCRGuideViewState extends State<OCRGuideView> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 30,),
-                Image.asset("assets/images/sampleCaptureKTP.png", width: 250,),
+                Image.asset("assets/images/sampleCaptureKTP.png", width: 200,),
                 SizedBox(height: 30,),
                 Text(
                   "Panduan Foto E-KTP",
@@ -83,32 +84,102 @@ class _OCRGuideViewState extends State<OCRGuideView> {
         ),
         bottomNavigationBar: Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          height: 60,
-          child: ButtonTheme(
-            minWidth: MediaQuery.of(context).size.width,
-            child: RaisedGradientButton(
-              gradient: LinearGradient(
-                colors: <Color>[
-                  colorPrimary,
-                  colorPrimary
-                ],
+          height: 120,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x80cacccf),
+                offset: Offset(0, -1),
+                blurRadius: 4,
+                spreadRadius: 0,
               ),
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreditApplyView(),
+            ],
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    if(checked == false) {
+                      setState(() {
+                        checked = true;
+                      });
+                    }else{
+                      setState(() {
+                        checked = false;
+                      });
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                          value: checked,
+                          checkColor: Colors.white,
+                          activeColor: colorPrimary,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: VisualDensity(vertical : -4, horizontal: -4),
+                          onChanged: (value) async {
+                            if(checked == false) {
+                              setState(() {
+                                checked = true;
+                              });
+                            }else{
+                              setState(() {
+                                checked = false;
+                              });
+                            }
+                          }
+                      ),
+                      //SizedBox(width: cb.Get.width * 0.05),
+                      SizedBox(width: 16),
+                      Flexible(
+                        child: Text(
+                          "Dengan melanjutkan proses ini saya mengetahui dan menyetujui proses verifikasi dan digitalisasi identitas yang diberikan",//DigitalIdLang.verificationGuideDetailText.tr,
+                          style: TextStyle(
+                            color: Color(0xff3f4144),
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              },
-              child: Text(
-                "Ambil Foto",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-            ),
+                ),
+              SizedBox(height: 10,),
+              ButtonTheme(
+                disabledColor: Colors.grey,
+                minWidth: MediaQuery.of(context).size.width,
+                child: RaisedGradientButton(
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      checked == false ? Colors.grey : colorPrimary,
+                      checked == false ? Colors.grey : colorPrimary
+                    ],
+                  ),
+                  onPressed: checked == false ? (){} : () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OCRView(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "AMBIL FOTO",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
-      )
     );
   }
 }

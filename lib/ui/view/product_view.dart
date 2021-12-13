@@ -1,4 +1,12 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/core/constant/viewstate.dart';
+import 'package:bima_finance/core/viewmodel/product_viewmodel.dart';
+import 'package:bima_finance/ui/view/base_view.dart';
+import 'package:bima_finance/ui/view/product_detail_view.dart';
+import 'package:bima_finance/ui/widget/modal_progress.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,78 +46,89 @@ class _ProductViewState extends State<ProductView> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!, width: 1)
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/images/motorcycle.png", width: 80,),
-                    SizedBox(width: 20,),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        "R2 - MOTOR",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      FontAwesomeIcons.chevronCircleRight,
-                      color: colorPrimary,
+      body: BaseView<ProductViewModel>(
+        onModelReady: (data) async {
+          await data.getProduct(context);
+        },
+        builder: (context, data, child) {
+          return ModalProgress(
+              inAsyncCall: data.state == ViewState.Busy ? true : false,
+              child: data.product == null ? Center(
+                child: CircularProgressIndicator()) : SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    child: data.product!.isEmpty ? Center(child: Text("Data Tidak Ditemukan")) : ListView.builder(
+                      itemCount: data.product!.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        Uint8List? image;
+                        if(data.product![index].product_thumbnail! !=null ) {
+                          image = Base64Codec().decode(data.product![index].product_thumbnail!);
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailView(data: data.product![index]),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(20),
+                            margin: EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(color: Colors.grey[300]!,
+                                    width: 1)
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 80,
+                                  height: 50,
+                                  decoration: data.product![index].product_thumbnail! !=null ? BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: MemoryImage(image!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ) : BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[300]
+                                  ),
+                                ),
+                                SizedBox(width: 20,),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "${data.product![index].product_name}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Icon(
+                                  FontAwesomeIcons.chevronCircleRight,
+                                  color: colorPrimary,
+                                  size: 18,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      }
                     )
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!, width: 1)
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/images/car.png", width: 80,),
-                    SizedBox(width: 20,),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        "R4 - MOBIL",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      FontAwesomeIcons.chevronCircleRight,
-                      color: colorPrimary,
-                    )
-                  ],
-                ),
+                  ),
               )
-            ],
-          ),
-        ),
+          );
+        }
       ),
     );
   }

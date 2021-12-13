@@ -30,7 +30,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
         onModelReady: (data) {},
         builder: (context, data, child) => Scaffold(
               appBar: AppBar(
+                backgroundColor: colorPrimary,
                 elevation: 0,
+                brightness: Brightness.dark,
               ),
               body: ModalProgress(
               inAsyncCall: false,//data.state == ViewState.Busy ?? ViewState.Idle,

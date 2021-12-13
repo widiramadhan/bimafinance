@@ -41,5 +41,16 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<!-- IMAGE PICKER START HERE -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires to access your photo library to show image on profile and update image profile</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Camera usage description</string>
+    <!-- IMAGE PICKER END HERE -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>googlechromes</string>
+        <string>comgooglemaps</string>
+    </array>
 </dict>
 </plist>

@@ -26,11 +26,12 @@ class _LoginViewState extends State<LoginView> {
         onModelReady: (data) {},
         builder: (context, data, child) => Scaffold(
               appBar: AppBar(
+                backgroundColor: colorPrimary,
                 elevation: 0,
                 brightness: Brightness.dark,
               ),
               body: ModalProgress(
-              inAsyncCall: false,//data.state == ViewState.Busy ?? ViewState.Idle,
+              inAsyncCall: data.state == ViewState.Busy ? true : false,
                child: SafeArea(
                 child: SingleChildScrollView(
                   child: Stack(

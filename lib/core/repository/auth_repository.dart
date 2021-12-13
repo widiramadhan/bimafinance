@@ -25,6 +25,8 @@ class AuthRepository extends ChangeNotifier {
         //if(response?.data['data']['is_active'] == 1) {
           prefs.setBool('is_login', true);
           prefs.setString('user_id', response!.data['data']['user_id'].toString());
+          prefs.setString('name', response?.data['data']['fullname']);
+          prefs.setString('phone', response?.data['data']['phone']);
           prefs.setString('email', response?.data['data']['email']);
           prefs.setString('token', response?.data['data']['token']);
           prefs.setString('message', response?.data['message']);

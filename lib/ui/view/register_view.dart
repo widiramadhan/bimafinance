@@ -27,6 +27,7 @@ class _RegisterViewState extends State<RegisterView> {
         onModelReady: (data) {},
         builder: (context, data, child) => Scaffold(
               appBar: AppBar(
+                backgroundColor: colorPrimary,
                 elevation: 0,
                 brightness: Brightness.dark,
               ),

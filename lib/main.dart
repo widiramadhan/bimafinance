@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: colorPrimary,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: TextTheme(body1: TextStyle(fontSize: 12), body2: TextStyle(fontSize: 12)),
+        textTheme: TextTheme(bodyText1: TextStyle(fontSize: 12), bodyText2: TextStyle(fontSize: 12)),
         fontFamily: 'DMSans',
         scaffoldBackgroundColor: Colors.white,
       ),
