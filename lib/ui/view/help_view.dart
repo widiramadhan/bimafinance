@@ -1,10 +1,21 @@
+import 'dart:io';
+
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/core/constant/web_url.dart';
+import 'package:bima_finance/ui/view/branch_view.dart';
+import 'package:bima_finance/ui/view/pdf_view.dart';
+import 'package:bima_finance/ui/view/webview_view.dart';
+import 'package:bima_finance/ui/widget/menu.dart';
+import 'package:bima_finance/ui/widget/separator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpView extends StatefulWidget {
   @override
@@ -16,6 +27,53 @@ class _HelpViewState extends State<HelpView> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void _launchWhatsapp(String phone, String message) async {
+    final url = 'https://wa.me/$phone?text=${Uri.parse(message)}';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Toast.show("Could not launch whatsapp, please install whatsapp in store", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      //throw 'Could not launch $url';
+    }
+  }
+
+  void _launchEmail() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'bimapeduli@bimafinance.co.id',
+    );
+    String  url = params.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Toast.show("Could not launch mail, please install mail in store", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
+
+  Future<void> _launchPhone(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Toast.show(
+          "Could not launch phone number", context, duration: Toast.LENGTH_LONG,
+          gravity: Toast.BOTTOM);
+      //throw 'Could not launch $url';
+    }
+  }
+
+  Future<File> createFileOfPdfUrl({String urlP = ''}) async {
+    final url = urlP;
+    String filename = '${DateTime.now().microsecondsSinceEpoch}';
+    var request = await HttpClient().getUrl(Uri.parse(url));
+    var response = await request.close();
+    var bytes = await consolidateHttpClientResponseBytes(response);
+    String dir = (await getApplicationDocumentsDirectory()).path;
+
+    File file = new File('$dir/$filename');
+    await file.writeAsBytes(bytes);
+    return file;
   }
 
   @override
@@ -51,29 +109,49 @@ class _HelpViewState extends State<HelpView> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    _profileMenu(
+                    MenuWidget(
                         title: "Telepon",
-                        icon: FontAwesomeIcons.phone
+                        icon: FontAwesomeIcons.phone,
+                        onTap: () {
+                          _launchPhone('tel:02163858555');
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Email",
-                        icon: FontAwesomeIcons.envelope
+                        icon: FontAwesomeIcons.envelope,
+                        onTap: () {
+                          _launchEmail();
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Lokasi",
-                        icon: FontAwesomeIcons.mapMarkerAlt
+                        icon: FontAwesomeIcons.mapMarkerAlt,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BranchView(),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "WhatsApp",
-                        icon: FontAwesomeIcons.whatsapp
+                        icon: FontAwesomeIcons.whatsapp,
+                        onTap: () {
+                          _launchWhatsapp('682311800180', "Halo, saya ingin bertanya mengenai Bima Finance");
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Berikan Pendapat Anda",
-                        icon: FontAwesomeIcons.comment
+                        icon: FontAwesomeIcons.comment,
+                        onTap: () {
+                          Toast.show("Layanan ini belum tersedia", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                        }
                     ),
                   ],
                 ),
@@ -93,14 +171,52 @@ class _HelpViewState extends State<HelpView> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    _profileMenu(
-                        title: "Prosedur Pengaduan Konsumen",
-                        icon: FontAwesomeIcons.fileCode
+                    MenuWidget(
+                        title: "Layanan Pengaduan Konsumen",
+                        icon: FontAwesomeIcons.fileCode,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Layanan Pengaduan",
+                                url: WebURL().layananPengaduan,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Formulir Pengaduan Konsumen",
-                        icon: FontAwesomeIcons.filePdf
+                        icon: FontAwesomeIcons.filePdf,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Formulir Pengaduan Konsumen",
+                                url: "http://www.bimafinance.co.id/wp-content/uploads/Formulir-Pengaduan-Konsumen.pdf",
+                              ),
+                            ),
+                          );
+                        }
+                    ),
+                    SeparatorWidget(),
+                    MenuWidget(
+                        title: "Pengkinian Data Debitur",
+                        icon: FontAwesomeIcons.idCard,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Pengkinian Data Debitur",
+                                url: WebURL().pengkinianDataDebitur,
+                              ),
+                            ),
+                          );
+                        }
                     ),
                   ],
                 ),
@@ -109,58 +225,6 @@ class _HelpViewState extends State<HelpView> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _separator(){
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
-      height: 1,
-      color: Colors.grey[300],
-    );
-  }
-
-  Widget _profileMenu({
-    @required String? title,
-    @required String? value,
-    VoidCallback? onTap,
-    IconData? icon,
-  }){
-    return GestureDetector(
-        onTap: onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: Icon(
-                icon,
-                color: colorPrimary,
-                size: 20,
-              ),
-            ),
-            SizedBox(width: 10,),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "$title",
-                style: TextStyle(
-                    fontSize: 14
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Icon(
-                Icons.chevron_right,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        )
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Api {
   //static const endpoint = "https://widiramadhan.com/bimaservices/api/";
-  static const endpoint = "http://192.168.1.6/bimaservices/api/";
+  static const endpoint = "http://192.168.1.2/bimaservices/api/";
   final timeout = 20;
 
   //auth
@@ -29,11 +29,17 @@ class Api {
   String updateAddress = endpoint + "user/updateAddress";
   String deleteAddress = endpoint + "user/deleteAddress";
 
-  //slider
+
   String getSlider = endpoint + "slider/getSlider";
   String getBranch = endpoint + "branch/getBranch";
   String getNews = endpoint + "news/getNews";
   String getPromo = endpoint + "promo/getPromo";
   String getProduct = endpoint + "product/getProduct";
   String getCareer = endpoint + "career/getCareer";
+  String getPayment = endpoint + "payment/getPayment";
+  String getJob = endpoint + "master/getJob";
+  String getSallary = endpoint + "master/getSallary";
+
+  //credit
+  String simulationCredit = endpoint + "credit/simulationCredit";
 }

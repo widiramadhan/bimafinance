@@ -1,14 +1,8 @@
 import 'package:bima_finance/core/constant/app_color.dart';
-import 'package:bima_finance/ui/view/credit_apply_view.dart';
 import 'package:bima_finance/ui/view/ocr_view.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
-import 'package:bima_finance/ui/widget/textfield_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:skeleton_text/skeleton_text.dart';
-import 'package:toast/toast.dart';
 
 class OCRGuideView extends StatefulWidget {
   @override

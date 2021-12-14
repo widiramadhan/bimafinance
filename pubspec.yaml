@@ -42,6 +42,8 @@ dependencies:
   location: ^4.1.1
   html: ^0.15.0
   flutter_html: ^2.2.1
+  flutter_masked_text: ^0.8.0
+  introduction_screen: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -52,4 +54,4 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/images/payment/
+    - assets/wilayah.json

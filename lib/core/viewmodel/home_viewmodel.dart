@@ -25,6 +25,15 @@ class HomeViewModel extends BaseViewModel {
 
   bool isLogin = false;
 
+  Future init(BuildContext context) async {
+    await getNews(context);
+    await getPromo(context);
+    await checkSessionLogin();
+    if(isLogin == true){
+      await getUser(context);
+    }
+  }
+
   Future<String?> checkSessionLogin() async {
     setState(ViewState.Busy);
     SharedPreferences prefs = await SharedPreferences.getInstance();

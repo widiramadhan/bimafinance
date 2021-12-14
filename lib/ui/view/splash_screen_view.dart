@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/ui/view/index_view.dart';
+import 'package:bima_finance/ui/view/introduction_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,25 +39,19 @@ class _SplashScreenViewState extends State<SplashScreenView>
     var duration = const Duration(seconds: 3);
     return Timer(duration, () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // if(prefs.getBool('is_login') == true){
-      //   Navigator.of(context).pushReplacement(
-      //       MaterialPageRoute(
-      //         builder: (context) => HomeView(),
-      //       )
-      //   );
-      // }else {
-      //   Navigator.of(context).pushReplacement(
-      //       MaterialPageRoute(
-      //         builder: (context) => LoginView(),
-      //       )
-      //   );
-      // }
-
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => IndexView(),
-        )
-      );
+      if(prefs.getBool('intro') == true){
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => IndexView(),
+            )
+        );
+      }else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => IntroductionView(),
+            )
+        );
+      }
     });
   }
 
@@ -71,6 +66,21 @@ class _SplashScreenViewState extends State<SplashScreenView>
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/bg_splash.jpeg'),
+                  fit: BoxFit.cover
+                )
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.white.withOpacity(0.85),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +88,7 @@ class _SplashScreenViewState extends State<SplashScreenView>
                   Image.asset("assets/images/logo.png", width: animation!.value * 200, height: animation!.value * 200,),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

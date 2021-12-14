@@ -8,6 +8,13 @@ import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
 
 class ContractView extends StatefulWidget {
+  bool? isBack;
+
+  ContractView({
+    Key? key,
+    this.isBack = false
+  });
+
   @override
   _ContractViewState createState() => _ContractViewState();
 }
@@ -37,6 +44,15 @@ class _ContractViewState extends State<ContractView> with SingleTickerProviderSt
         backgroundColor: Colors.white,
         elevation: 2,
         brightness: Brightness.light,
+        leading: widget.isBack == true ? GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: colorPrimary,
+          ),
+        ) : null,
         bottom: TabBar(
           controller: _tabController,
           tabs: [

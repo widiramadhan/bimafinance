@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/helper/nik_validator.dart';
-import 'package:bima_finance/ui/view/credit_apply_view.dart';
+import 'package:bima_finance/ui/view/verification_view.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
@@ -47,6 +47,12 @@ class _OCRViewState extends State<OCRView> {
   bool _isLoading = false;
 
   String nik = "";
+  String dob = "";
+  String gender = "";
+  String province = "";
+  String city = "";
+  String subDistrict = "";
+  String postalCode = "";
 
   @override
   void initState() {
@@ -143,21 +149,6 @@ class _OCRViewState extends State<OCRView> {
                 setState(() {
                   nik = line.text;
                 });
-                NIKModel result = await NIKValidator.instance.parse(nik: nik);
-                /// When nik is valid
-                if (result.valid!) {
-                  print("NIK: ${result.nik}");
-                  print("UNIQUE CODE: ${result.uniqueCode}");
-                  print("GENDER: ${result.gender}");
-                  print("BORNDATE: ${result.bornDate}");
-                  print("AGE: ${result.age}");
-                  print("NEXT BIRTHDAY: ${result.nextBirthday}");
-                  print("ZODIAC: ${result.zodiac}");
-                  print("PROVINCE: ${result.province}");
-                  print("CITY: ${result.city}");
-                  print("SUBDISTRICT: ${result.subdistrict}");
-                  print("POSTAL CODE: ${result.postalCode}");
-                }
               }
             });
           });
@@ -422,21 +413,45 @@ class _OCRViewState extends State<OCRView> {
                                         onPressed: _messageTutorial == false ? null : () async {
                                           onTakePictureButtonPressed();
                                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          print(nik);
-                                          if(nik == ""){
+                                          nik = "3216072005920012";
+                                          NIKModel result = await NIKValidator.instance.parse(nik: nik);
+                                          /// When nik is valid
+                                          if (result.valid!) {
+                                            print("NIK: ${result.nik}");
+                                            print("UNIQUE CODE: ${result.uniqueCode}");
+                                            print("GENDER: ${result.gender}");
+                                            print("BORNDATE: ${result.bornDate}");
+                                            print("AGE: ${result.age}");
+                                            print("NEXT BIRTHDAY: ${result.nextBirthday}");
+                                            print("ZODIAC: ${result.zodiac}");
+                                            print("PROVINCE: ${result.province}");
+                                            print("CITY: ${result.city}");
+                                            print("SUBDISTRICT: ${result.subdistrict}");
+                                            print("POSTAL CODE: ${result.postalCode}");
+
+                                            setState(() {
+                                              dob = result.bornDate!;
+                                              gender = result.gender!;
+                                              province = result.province!;
+                                              city = result.city!;
+                                              subDistrict = result.subdistrict!;
+                                              postalCode = result.postalCode!;
+                                            });
+                                          }
+                                          if(nik != ""){
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => CreditApplyView(
-                                                  nik: "3216072005920012",
+                                                builder: (context) => VerificationView(
+                                                  nik: "${nik}",
                                                   name: "${prefs.getString('name')}",
-                                                  dob: "1992-05-20",
-                                                  gender: "Pria",
-                                                  address: "Perum Trias Estate",
-                                                  province: 'Jawa Barat',
-                                                  city: 'Bekasi',
-                                                  subDistrict: 'Cibitung',
-                                                  postalCode: '17520',
+                                                  dob: "${dob}",
+                                                  gender: "${gender}",
+                                                  address: "",
+                                                  province: '${province}',
+                                                  city: '${city}',
+                                                  subDistrict: '${subDistrict}',
+                                                  postalCode: '${postalCode}',
                                                   ktpPhoto: _croppedFile,
                                                 ),
                                               ),

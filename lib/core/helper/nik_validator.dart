@@ -172,7 +172,7 @@ class NIKValidator {
   ///from local json data
   Future<Map<String, dynamic>?> _getLocationAsset() async =>
       jsonDecode(await rootBundle
-          .loadString("packages/nik_validator/assets/wilayah.json"));
+          .loadString("assets/wilayah.json"));
 }
 
 ///Class for calculating age and next birthday,

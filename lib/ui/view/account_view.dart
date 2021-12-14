@@ -1,10 +1,12 @@
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/viewmodel/account_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
+import 'package:bima_finance/ui/view/contract_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
 import 'package:bima_finance/ui/widget/dialog_question.dart';
 import 'package:bima_finance/ui/widget/dialog_success.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
+import 'package:bima_finance/ui/widget/menu.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,14 +56,14 @@ class _AccountViewState extends State<AccountView> {
                   }
                 },
               builder: (context, data, child) {
-                if(isLogin == true) {
+                if(isLogin == false) {
+                  return _loginPage(data, context);
+                } else {
                   if(data.user == null) {
                     return Center(child: CircularProgressIndicator(),);
                   } else {
                     return _profilePage(data, context);
                   }
-                } else {
-                  return _loginPage(data, context);
                 }
               }
             );
@@ -88,7 +90,7 @@ class _AccountViewState extends State<AccountView> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset("assets/images/img_login.png", width: 200,),
+          Image.asset("assets/images/img_login.png", width: 300,),
           SizedBox(height: 20,),
           Text(
             "Oppsss...",
@@ -101,7 +103,8 @@ class _AccountViewState extends State<AccountView> {
           Text(
             "Anda belum login\nsilahkan login terlebih dahulu",
             style: TextStyle(
-                fontSize: 14
+              fontSize: 14,
+              color: Colors.grey
             ),
             textAlign: TextAlign.center,
           ),
@@ -121,9 +124,13 @@ class _AccountViewState extends State<AccountView> {
                   MaterialPageRoute(
                     builder: (context) => LoginView(),
                   ),
-                ).then((value) {
-                  if(isLogin == true){
+                ).then((value) async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  if(prefs.getBool('is_login') == true){
                     data.getUser(context);
+                    setState(() {
+                      isLogin = true;
+                    });
                   }
                 });
               },
@@ -204,14 +211,23 @@ class _AccountViewState extends State<AccountView> {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
-                  _profileMenu(
-                      title: "Daftar Kontrak",
-                      icon: FontAwesomeIcons.fileContract
+                  MenuWidget(
+                    title: "Daftar Kontrak",
+                    icon: FontAwesomeIcons.fileContract,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ContractView(isBack: true),
+                        ),
+                      );
+                    },
                   ),
                   _separator(),
-                  _profileMenu(
-                      title: "Riwayat Pembayaran",
-                      icon: FontAwesomeIcons.history
+                  MenuWidget(
+                    title: "Riwayat Pembayaran",
+                    icon: FontAwesomeIcons.history,
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -231,25 +247,29 @@ class _AccountViewState extends State<AccountView> {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
-                  _profileMenu(
-                      title: "Ubah Profil",
-                      icon: FontAwesomeIcons.idCard
+                  MenuWidget(
+                    title: "Ubah Profil",
+                    icon: FontAwesomeIcons.idCard,
+                    onTap: () {},
                   ),
                   _separator(),
-                  _profileMenu(
-                      title: "Ubah Kata Sandi",
-                      icon: FontAwesomeIcons.lock
+                  MenuWidget(
+                    title: "Ubah Kata Sandi",
+                    icon: FontAwesomeIcons.lock,
+                    onTap: () {},
                   ),
-                  _separator(),
-                  _profileMenu(
-                      title: "Daftar Dokumen",
-                      icon: FontAwesomeIcons.fileInvoice
-                  ),
-                  _separator(),
-                  _profileMenu(
-                      title: "Bima Poin",
-                      icon: FontAwesomeIcons.coins
-                  ),
+                  // _separator(),
+                  // MenuWidget(
+                  //   title: "Daftar Dokumen",
+                  //   icon: FontAwesomeIcons.fileInvoice,
+                  //   onTap: () {},
+                  // ),
+                  // _separator(),
+                  // MenuWidget(
+                  //   title: "Bima Poin",
+                  //   icon: FontAwesomeIcons.coins,
+                  //   onTap: () {},
+                  // ),
                 ],
               ),
             ),
@@ -321,50 +341,6 @@ class _AccountViewState extends State<AccountView> {
       margin: EdgeInsets.symmetric(vertical: 16),
       height: 1,
       color: Colors.grey[300],
-    );
-  }
-
-  Widget _profileMenu({
-    @required String? title,
-    @required String? value,
-    VoidCallback? onTap,
-    IconData? icon,
-  }){
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Icon(
-              icon,
-              color: colorPrimary,
-              size: 20,
-            ),
-          ),
-          SizedBox(width: 10,),
-          Expanded(
-            flex: 1,
-            child: Text(
-              "$title",
-              style: TextStyle(
-                fontSize: 14
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 10),
-            child: Icon(
-              Icons.chevron_right,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      )
     );
   }
 }

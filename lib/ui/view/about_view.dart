@@ -1,4 +1,8 @@
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/core/constant/web_url.dart';
+import 'package:bima_finance/ui/view/webview_view.dart';
+import 'package:bima_finance/ui/widget/menu.dart';
+import 'package:bima_finance/ui/widget/separator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,49 +64,148 @@ class _AboutViewState extends State<AboutView> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    _profileMenu(
-                        title: "Sejarah",
-                        icon: FontAwesomeIcons.building
+                    MenuWidget(
+                      title: "Sejarah",
+                      icon: FontAwesomeIcons.building,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebviewView(
+                              title: "Sejarah",
+                              url: WebURL().sejarah,
+                            ),
+                          ),
+                        );
+                      }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Visi & Misi",
-                        icon: FontAwesomeIcons.handshake
+                        icon: FontAwesomeIcons.handshake,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Visi & Misi",
+                                url: WebURL().visiMisi,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Kultur",
-                        icon: FontAwesomeIcons.laptopHouse
+                        icon: FontAwesomeIcons.laptopHouse,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Kultur",
+                                url: WebURL().cultur,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Manajemen",
-                        icon: FontAwesomeIcons.networkWired
+                        icon: FontAwesomeIcons.networkWired,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Manajemen",
+                                url: WebURL().manajemen,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Penghargaan",
-                        icon: FontAwesomeIcons.trophy
+                        icon: FontAwesomeIcons.trophy,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Penghargaan",
+                                url: WebURL().penghargaan,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Laporan Tahunan",
-                        icon: FontAwesomeIcons.fileArchive
+                        icon: FontAwesomeIcons.fileArchive,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Laporan Tahunan",
+                                url: WebURL().laporanTahunan,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Obligasi",
-                        icon: FontAwesomeIcons.fileSignature
+                        icon: FontAwesomeIcons.fileSignature,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Obligasi",
+                                url: WebURL().obligasi,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Publikasi",
-                        icon: FontAwesomeIcons.fileCode
+                        icon: FontAwesomeIcons.fileCode,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Publikasi",
+                                url: WebURL().publikasi,
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Laporan Keberlanjutan",
-                        icon: FontAwesomeIcons.fileImport
+                        icon: FontAwesomeIcons.fileImport,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Laporan Keberlanjutan",
+                                url: WebURL().laporanKeberlanjutan,
+                              ),
+                            ),
+                          );
+                        }
                     ),
                   ],
                 ),
@@ -122,19 +225,44 @@ class _AboutViewState extends State<AboutView> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    _profileMenu(
+                    MenuWidget(
                         title: "Bima Finance Mobile",
-                        icon: FontAwesomeIcons.mobileAlt
+                        icon: FontAwesomeIcons.mobileAlt,
+                        onTap: () {
+
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Kebijakan Privasi",
-                        icon: FontAwesomeIcons.lock
+                        icon: FontAwesomeIcons.lock,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Kebijakan Privasi",
+                                url: "https://loremipsum.io/privacy-policy/",
+                              ),
+                            ),
+                          );
+                        }
                     ),
-                    _separator(),
-                    _profileMenu(
+                    SeparatorWidget(),
+                    MenuWidget(
                         title: "Syarat & Ketentuan",
-                        icon: FontAwesomeIcons.fileInvoice
+                        icon: FontAwesomeIcons.fileInvoice,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebviewView(
+                                title: "Syarat & Ketentuan",
+                                url: "https://generator.lorem-ipsum.info/terms-and-conditions",
+                              ),
+                            ),
+                          );
+                        }
                     ),
                   ],
                 ),
@@ -143,58 +271,6 @@ class _AboutViewState extends State<AboutView> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _separator(){
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
-      height: 1,
-      color: Colors.grey[300],
-    );
-  }
-
-  Widget _profileMenu({
-    @required String? title,
-    @required String? value,
-    VoidCallback? onTap,
-    IconData? icon,
-  }){
-    return GestureDetector(
-        onTap: onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: Icon(
-                icon,
-                color: colorPrimary,
-                size: 20,
-              ),
-            ),
-            SizedBox(width: 10,),
-            Expanded(
-              flex: 1,
-              child: Text(
-                "$title",
-                style: TextStyle(
-                    fontSize: 14
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: Icon(
-                Icons.chevron_right,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        )
     );
   }
 }
