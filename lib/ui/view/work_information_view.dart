@@ -26,7 +26,11 @@ class WorkInformationView extends StatefulWidget {
   String? city;
   String? subDistrict;
   String? postalCode;
+  String? phoneNumber;
+  String? motherName;
+  String? emergencyContact;
   File? ktpPhoto;
+  File? selfiePhoto;
 
   WorkInformationView({
     Key? key,
@@ -39,7 +43,11 @@ class WorkInformationView extends StatefulWidget {
     required this.city,
     required this.subDistrict,
     required this.postalCode,
+    required this.phoneNumber,
+    required this.motherName,
+    required this.emergencyContact,
     required this.ktpPhoto,
+    required this.selfiePhoto,
   });
 
   @override
@@ -253,7 +261,11 @@ class _WorkInformationViewState extends State<WorkInformationView> {
                       city: widget.city!,
                       subDistrict: widget.subDistrict!,
                       postalCode: widget.postalCode!,
+                      phoneNumber: widget.phoneNumber!,
+                      motherName: widget.motherName!,
+                      emergencyContact: widget.emergencyContact,
                       ktpPhoto: widget.ktpPhoto,
+                      selfiePhoto: widget.selfiePhoto,
                       companyName: _txtCompanyName.text,
                       companyPhone: _txtCompanyPhone.text,
                       companyAddress: _txtCompanyName.text,

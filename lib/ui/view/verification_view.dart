@@ -6,6 +6,7 @@ import 'package:bima_finance/core/constant/regex_rule.dart';
 import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/viewmodel/credit_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
+import 'package:bima_finance/ui/view/liveness_view.dart';
 import 'package:bima_finance/ui/view/work_information_view.dart';
 import 'package:bima_finance/ui/widget/main_button.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
@@ -55,9 +56,9 @@ class _VerificationViewState extends State<VerificationView> {
   final _txtCity = TextEditingController();
   final _txtSubDistrict = TextEditingController();
   final _txtPostalCode = TextEditingController();
-  final _companyName = TextEditingController();
-  final _sallary = TextEditingController();
-  final _job = TextEditingController();
+  final _txtPhoneNumber = TextEditingController();
+  final _txtMotherName = TextEditingController();
+  final _txtEmergencyContact = TextEditingController();
 
   @override
   void initState() {
@@ -267,6 +268,44 @@ class _VerificationViewState extends State<VerificationView> {
                               RegexRule.emptyValidationRule,
                             ],
                           ),
+                          SizedBox(height: 20,),
+                          TextFieldWidget(
+                            controller: _txtPhoneNumber,
+                            labelText: 'Nomor Telepon',
+                            hintText: 'Masukkan Nomor Telepon',
+                            textInputType: TextInputType.number,
+                            onAction: TextInputAction.next,
+                            maxLength: 15,
+                            maxLines: 1,
+                            validation: [
+                              RegexRule.emptyValidationRule,
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          TextFieldWidget(
+                            controller: _txtMotherName,
+                            labelText: 'Nama Gadis Ibu Kandung',
+                            hintText: 'Nama Gadis Ibu Kandung',
+                            textInputType: TextInputType.text,
+                            onAction: TextInputAction.next,
+                            maxLines: 1,
+                            validation: [
+                              RegexRule.emptyValidationRule,
+                            ],
+                          ),
+                          SizedBox(height: 20,),
+                          TextFieldWidget(
+                            controller: _txtEmergencyContact,
+                            labelText: 'Nomor Kontak Darurat',
+                            hintText: 'Masukkan Nomor Kontak Darurat',
+                            textInputType: TextInputType.number,
+                            onAction: TextInputAction.next,
+                            maxLength: 15,
+                            maxLines: 1,
+                            validation: [
+                              RegexRule.emptyValidationRule,
+                            ],
+                          ),
                         ],
                       ),
                     )
@@ -283,14 +322,14 @@ class _VerificationViewState extends State<VerificationView> {
           textColor: Colors.white,
           radius: 20,
           onPressed: () async {
-            if(_txtName.text == "" || _txtAddress.text == ""){
+            if(_txtName.text == "" || _txtAddress.text == "" || _txtPhoneNumber.text == "" || _txtMotherName.text == "" || _txtEmergencyContact.text == ""){
               Toast.show("Mohon lengkapi data anda", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
             }else{
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      WorkInformationView(
+                      LivenessView(
                         nik: _txtNik.text,
                         name: _txtName.text,
                         dob: _txtDob.text,
@@ -300,6 +339,9 @@ class _VerificationViewState extends State<VerificationView> {
                         city: _txtCity.text,
                         subDistrict: _txtSubDistrict.text,
                         postalCode: _txtPostalCode.text,
+                        phoneNumber: _txtPhoneNumber.text,
+                        motherName: _txtMotherName.text,
+                        emergencyContact: _txtEmergencyContact.text,
                         ktpPhoto: widget.ktpPhoto,
                       ),
                 ),

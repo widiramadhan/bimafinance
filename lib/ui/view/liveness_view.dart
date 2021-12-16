@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/ui/view/work_information_view.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
+import 'package:bima_finance/ui/widget/step_wizard_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -17,6 +19,9 @@ class LivenessView extends StatefulWidget {
   String? city;
   String? subDistrict;
   String? postalCode;
+  String? phoneNumber;
+  String? motherName;
+  String? emergencyContact;
   File? ktpPhoto;
 
   LivenessView({
@@ -30,6 +35,9 @@ class LivenessView extends StatefulWidget {
     required this.city,
     required this.subDistrict,
     required this.postalCode,
+    required this.phoneNumber,
+    required this.motherName,
+    required this.emergencyContact,
     required this.ktpPhoto,
   });
 
@@ -103,10 +111,9 @@ class _LivenessViewState extends State<LivenessView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            title: Text("Verifikasi Wajah", style: TextStyle(color: colorPrimary),),
+            title: Text("Verifikasi Data", style: TextStyle(color: colorPrimary),),
             centerTitle: true,
             backgroundColor: Colors.white,
             elevation: 2,
@@ -118,6 +125,39 @@ class _LivenessViewState extends State<LivenessView> {
               child: Icon(
                 Icons.arrow_back,
                 color: colorPrimary,
+              ),
+            ),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(kToolbarHeight),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: StepWizardWidget(
+                        active: true,
+                        title: "Konfirmasi Data",
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: StepWizardWidget(
+                        active: false,
+                        title: "Informasi Pekerjaan",
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: StepWizardWidget(
+                        active: false,
+                        title: "Pengajuan Kredit",
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -142,7 +182,7 @@ class _LivenessViewState extends State<LivenessView> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 30,),
-                    Image.asset("assets/images/sampleLivenessKTP.png", width: 250,),
+                    Image.asset("assets/images/sampleLivenessKTP.png", width: 200,),
                     SizedBox(height: 30,),
                     Text(
                       "Panduan Foto Wajah",
@@ -192,6 +232,17 @@ class _LivenessViewState extends State<LivenessView> {
           bottomNavigationBar: Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             height: 60,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x80cacccf),
+                  offset: Offset(0, -1),
+                  blurRadius: 4,
+                  spreadRadius: 0,
+                ),
+              ],
+              color: Colors.white,
+            ),
             child: ButtonTheme(
               minWidth: MediaQuery.of(context).size.width,
               child: RaisedGradientButton(
@@ -205,17 +256,36 @@ class _LivenessViewState extends State<LivenessView> {
                   if(_imageFile == null) {
                     await _onImageButtonPressed(ImageSource.camera);
                   } else {
-                    print("test");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) =>
+                          WorkInformationView(
+                            nik: widget.nik!,
+                            name: widget.name!,
+                            dob: widget.dob!,
+                            gender: widget.gender!,
+                            address: widget.address!,
+                            province: widget.province!,
+                            city: widget.city!,
+                            subDistrict: widget.subDistrict!,
+                            postalCode: widget.postalCode!,
+                            phoneNumber: widget.phoneNumber!,
+                            motherName: widget.motherName!,
+                            emergencyContact: widget.emergencyContact,
+                            ktpPhoto: widget.ktpPhoto,
+                            selfiePhoto: _imageFile,
+                          ),
+                    ));
                   }
                 },
                 child: Text(
-                  _imageFile == null ? "AMBIL FOTO" : "SUBMIT DATA",
+                  _imageFile == null ? "AMBIL FOTO" : "LANJUTKAN",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                 ),
               ),
             ),
           ),
-        )
     );
   }
 }

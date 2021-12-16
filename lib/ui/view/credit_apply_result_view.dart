@@ -29,7 +29,11 @@ class CreditApplyResultView extends StatefulWidget {
   String? city;
   String? subDistrict;
   String? postalCode;
+  String? phoneNumber;
+  String? motherName;
+  String? emergencyContact;
   File? ktpPhoto;
+  File? selfiePhoto;
   String? companyName;
   String? companyPhone;
   String? companyAddress;
@@ -49,7 +53,11 @@ class CreditApplyResultView extends StatefulWidget {
     required this.city,
     required this.subDistrict,
     required this.postalCode,
+    required this.phoneNumber,
+    required this.motherName,
+    required this.emergencyContact,
     required this.ktpPhoto,
+    required this.selfiePhoto,
     required this.companyName,
     required this.companyPhone,
     required this.companyAddress,
@@ -126,7 +134,14 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: BaseView<CreditViewModel>(
+        onModelReady: (data) async {
+
+        },
+        builder: (context, data, child) {
+          return ModalProgress(
+            inAsyncCall: data.state == ViewState.Busy ? true : false,
+            child: SingleChildScrollView(
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +149,8 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                   children: [
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       color: Color(0xfff5f6f8),
                       child: Text(
                         "DATA PRIBADI",
@@ -171,13 +187,14 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                     SizedBox(height: 20,),
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       color: Color(0xfff5f6f8),
                       child: Text(
                         "DATA PENGAJUAN",
                         style: TextStyle(
                             color: Colors.grey,
-                          fontSize: 16
+                            fontSize: 16
                         ),
                       ),
                     ),
@@ -199,8 +216,14 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                           ),
                           SeparatorWidget(),
                           DetailWidget(
-                              title: widget.data!.product_id != 3 ? "Harga Kendaraan" : "Jumlah Pinjaman",
-                              subtitle: widget.data!.product_id != 3 ? "Rp. ${formatter.format(widget.data!.price)} " : "Rp. ${formatter.format(widget.data!.loan_amount)}"
+                              title: widget.data!.product_id != 3
+                                  ? "Harga Kendaraan"
+                                  : "Jumlah Pinjaman",
+                              subtitle: widget.data!.product_id != 3
+                                  ? "Rp. ${formatter.format(
+                                  widget.data!.price)} "
+                                  : "Rp. ${formatter.format(
+                                  widget.data!.loan_amount)}"
                           ),
                           SeparatorWidget(),
                           DetailWidget(
@@ -210,12 +233,14 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                           SeparatorWidget(),
                           DetailWidget(
                               title: "Uang Muka",
-                              subtitle: "Rp. ${formatter.format(widget.data!.dp)}"
+                              subtitle: "Rp. ${formatter.format(
+                                  widget.data!.dp)}"
                           ),
                           SeparatorWidget(),
                           DetailWidget(
                               title: "Cicilan Perbulan",
-                              subtitle: "Rp. ${formatter.format(widget.data!.instalment)}"
+                              subtitle: "Rp. ${formatter.format(
+                                  widget.data!.instalment)}"
                           ),
                           SeparatorWidget(),
                         ],
@@ -225,6 +250,9 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                 ),
               ),
             ),
+          );
+        }
+      ),
       bottomNavigationBar: Container(
         height: 70,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -234,13 +262,44 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
           textColor: Colors.white,
           radius: 20,
           onPressed: () async {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    SuccessView(),
-              ),
-            );
+            CreditViewModel model = new CreditViewModel();
+            var success = await model.applyCredit(
+                widget.nik,
+                widget.dob,
+                widget.gender,
+                widget.address,
+                widget.phoneNumber,
+                widget.motherName,
+                widget.emergencyContact,
+                widget.province,
+                widget.city,
+                widget.subDistrict,
+                widget.postalCode,
+                widget.ktpPhoto,
+                widget.selfiePhoto,
+                widget.companyName,
+                widget.companyPhone,
+                widget.companyAddress,
+                widget.job,
+                widget.sallary,
+                widget.data!.product_id,
+                widget.data!.product_id != 3 ? widget.data!.price : widget.data!.loan_amount,
+                widget.data!.tenor,
+                widget.data!.dp,
+                widget.data!.interest_per_month,
+                widget.data!.total_interest,
+                widget.data!.total_debt,
+                widget.data!.instalment,
+                context);
+            if(success == true) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SuccessView(),
+                ),
+              );
+            }
           },
         ),
       ),

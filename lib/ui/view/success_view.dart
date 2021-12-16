@@ -75,6 +75,7 @@ class _SuccessViewState extends State<SuccessView> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   }
               )
             ],

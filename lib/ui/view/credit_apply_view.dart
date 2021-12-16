@@ -28,7 +28,11 @@ class CreditApplyView extends StatefulWidget {
   String? city;
   String? subDistrict;
   String? postalCode;
+  String? phoneNumber;
+  String? motherName;
+  String? emergencyContact;
   File? ktpPhoto;
+  File? selfiePhoto;
   String? companyName;
   String? companyPhone;
   String? companyAddress;
@@ -47,7 +51,11 @@ class CreditApplyView extends StatefulWidget {
     required this.city,
     required this.subDistrict,
     required this.postalCode,
+    required this.phoneNumber,
+    required this.motherName,
+    required this.emergencyContact,
     required this.ktpPhoto,
+    required this.selfiePhoto,
     required this.companyName,
     required this.companyPhone,
     required this.companyAddress,
@@ -313,7 +321,11 @@ class _CreditApplyViewState extends State<CreditApplyView> {
                               city: widget.city!,
                               subDistrict: widget.subDistrict!,
                               postalCode: widget.postalCode!,
+                              phoneNumber: widget.phoneNumber!,
+                              motherName: widget.motherName!,
+                              emergencyContact: widget.emergencyContact,
                               ktpPhoto: widget.ktpPhoto,
+                              selfiePhoto: widget.selfiePhoto,
                               companyName: widget.companyName,
                               companyPhone: widget.companyPhone,
                               companyAddress: widget.companyAddress,

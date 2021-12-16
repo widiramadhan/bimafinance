@@ -42,4 +42,5 @@ class Api {
 
   //credit
   String simulationCredit = endpoint + "credit/simulationCredit";
+  String applyCredit = endpoint + "credit/applyCredit";
 }

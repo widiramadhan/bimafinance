@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/model/credit_model.dart';
 import 'package:bima_finance/core/model/job_model.dart';
@@ -64,5 +66,75 @@ class CreditViewModel extends BaseViewModel {
     notifyListeners();
     setState(ViewState.Idle);
     return credit!;
+  }
+
+  Future<bool>? applyCredit(
+      String? nik,
+      String? dob,
+      String? gender,
+      String? address,
+      String? phoneNumber,
+      String? motherName,
+      String? emergencyContact,
+      String? province,
+      String? city,
+      String? subDistrict,
+      String? postalCode,
+      File? ktpPhoto,
+      File? selfiePhoto,
+      String? companyName,
+      String? companyPhoneNumber,
+      String? companyAddress,
+      int? jobId,
+      int? sallaryId,
+      int? productId,
+      int? amount,
+      int? tenor,
+      int? downPayment,
+      int? interestPerMonth,
+      int? totalInterest,
+      int? totalDebt,
+      int? installment,
+      BuildContext context
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(ViewState.Busy);
+    var success = await creditRepository.applyCredit(
+        prefs.getString('user_id'),
+        nik,
+        dob,
+        gender,
+        address,
+        phoneNumber,
+        motherName,
+        emergencyContact,
+        province,
+        city,
+        subDistrict,
+        postalCode,
+        ktpPhoto,
+        selfiePhoto,
+        companyName,
+        companyPhoneNumber,
+        companyAddress,
+        jobId,
+        sallaryId,
+        productId,
+        amount,
+        tenor,
+        downPayment,
+        interestPerMonth,
+        totalInterest,
+        totalDebt,
+        installment,
+        context);
+    setState(ViewState.Idle);
+    if (success) {
+      return true;
+    } else {
+      Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
+      return false;
+    }
   }
 }

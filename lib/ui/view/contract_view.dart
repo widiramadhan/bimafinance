@@ -93,7 +93,7 @@ class _ContractViewState extends State<ContractView> with SingleTickerProviderSt
         child: Column(
           children: [
             ListView.builder(
-              itemCount: 5,
+              itemCount: 0,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
