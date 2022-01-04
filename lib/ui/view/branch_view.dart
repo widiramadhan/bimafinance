@@ -118,7 +118,7 @@ class _BranchViewState extends State<BranchView> {
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           Uint8List? image;
-                          if(branch![index].branch_images! !=null ) {
+                          if(branch![index].branch_images !=null ) {
                              image = Base64Codec().decode(branch![index].branch_images!);
                           }
                           return GestureDetector(
@@ -144,7 +144,7 @@ class _BranchViewState extends State<BranchView> {
                                   Container(
                                     width: double.infinity,
                                     height: 120,
-                                    decoration: branch![index].branch_images! !=null ? BoxDecoration(
+                                    decoration: branch![index].branch_images !=null ? BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(10),
                                           topLeft: Radius.circular(10)
