@@ -4,6 +4,8 @@ import 'package:badges/badges.dart';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/viewmodel/account_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
+import 'package:bima_finance/ui/view/change_password_view.dart';
+import 'package:bima_finance/ui/view/change_profile_view.dart';
 import 'package:bima_finance/ui/view/contract_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
 import 'package:bima_finance/ui/view/photo_viewer_view.dart';
@@ -345,7 +347,7 @@ class _AccountViewState extends State<AccountView> {
                   ),
                   SizedBox(height: 20,),
                   Text(
-                    "Widi Ramadhan",
+                    "${data.user!.fullname!}",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold
@@ -353,7 +355,7 @@ class _AccountViewState extends State<AccountView> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    "Edit Profil",
+                    "${data.user!.email!}",
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 14
@@ -416,13 +418,29 @@ class _AccountViewState extends State<AccountView> {
                   MenuWidget(
                     title: "Ubah Profil",
                     icon: FontAwesomeIcons.idCard,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangeProfileView(user: data.user!),
+                        ),
+                      ).then((value) async {
+                        await data.getUser(context);
+                      });
+                    },
                   ),
                   _separator(),
                   MenuWidget(
                     title: "Ubah Kata Sandi",
                     icon: FontAwesomeIcons.lock,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangePasswordView(),
+                        ),
+                      );
+                    },
                   ),
                   // _separator(),
                   // MenuWidget(
