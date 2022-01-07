@@ -5,6 +5,7 @@ import 'package:bima_finance/core/repository/career_repository.dart';
 import 'package:bima_finance/core/repository/credit_repository.dart';
 import 'package:bima_finance/core/repository/master_repository.dart';
 import 'package:bima_finance/core/repository/news_repository.dart';
+import 'package:bima_finance/core/repository/notification_repository.dart';
 import 'package:bima_finance/core/repository/payment_repository.dart';
 import 'package:bima_finance/core/repository/product_repository.dart';
 import 'package:bima_finance/core/repository/promo_repository.dart';
@@ -33,6 +34,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => PaymentRepository());
   locator.registerLazySingleton(() => CreditRepository());
   locator.registerLazySingleton(() => MasterRepository());
+  locator.registerLazySingleton(() => NotificationRepository());
 
   locator.registerFactory(() => AuthViewModel());
   locator.registerFactory(() => HomeViewModel());

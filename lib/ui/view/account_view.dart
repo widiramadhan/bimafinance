@@ -1,8 +1,10 @@
+import 'package:badges/badges.dart';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/viewmodel/account_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/contract_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
+import 'package:bima_finance/ui/view/photo_viewer_view.dart';
 import 'package:bima_finance/ui/widget/dialog_question.dart';
 import 'package:bima_finance/ui/widget/dialog_success.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
@@ -60,7 +62,7 @@ class _AccountViewState extends State<AccountView> {
                   return _loginPage(data, context);
                 } else {
                   if(data.user == null) {
-                    return Center(child: CircularProgressIndicator(),);
+                    return Center(child: CircularProgressIndicator(color: colorPrimary,),);
                   } else {
                     return _profilePage(data, context);
                   }
@@ -155,43 +157,176 @@ class _AccountViewState extends State<AccountView> {
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(20),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey[300]!),
-                        borderRadius: BorderRadius.circular(60),
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/default_avatar.png"),
-                            fit: BoxFit.cover
-                        )
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext bc){
+                            return Container(
+                              child: new Wrap(
+                                children: <Widget>[
+                                  new ListTile(
+                                      leading: new Icon(Icons.account_circle, color: colorPrimary,),
+                                      title: new Text('Lihat foto profil', style: TextStyle(fontSize: 12),),
+                                      enabled: data.user!.url_images != null ? true : false,
+                                      onTap: () async {
+                                        if (data.user!.url_images != null) {
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PhotoViewerView(path: data.user!.url_images),
+                                              )
+                                          );
+                                        }
+                                      }
+                                  ),
+                                  // new ListTile(
+                                  //   leading: new Icon(Icons.camera_alt, color: Colors.green),
+                                  //   title: new Text('Ganti foto profil dari kamera', style: TextStyle(fontSize: 12),),
+                                  //   onTap: () async {
+                                  //     Navigator.pop(context);
+                                  //     await _onImageButtonPressed(ImageSource.camera);
+                                  //     print(_imageFile);
+                                  //     if(_imageFile != null){
+                                  //       var updatePhoto = await model.changeProfilePicture(_imageFile, context);
+                                  //       if (updatePhoto) {
+                                  //         /*showToastWidget(IconToastWidget.success(msg: "Berhasil"),
+                                  //         context: context,
+                                  //         animation: StyledToastAnimation.slideFromBottom,
+                                  //         reverseAnimation: StyledToastAnimation.slideToBottom,
+                                  //         position: StyledToastPosition.center,
+                                  //         animDuration: Duration(seconds: 1),
+                                  //         duration: Duration(seconds: 4),
+                                  //         curve: Curves.elasticOut,
+                                  //         reverseCurve: Curves.fastOutSlowIn);*/
+                                  //         model.getProfile(context);
+                                  //         _imageFile = null;
+                                  //       }
+                                  //     }
+                                  //   },
+                                  // ),
+                                  // new ListTile(
+                                  //   leading: new Icon(Icons.photo, color: Colors.green),
+                                  //   title: new Text('Ganti foto profil dari galeri', style: TextStyle(fontSize: 12),),
+                                  //   onTap: () async {
+                                  //     Navigator.pop(context);
+                                  //     await _onImageButtonPressed(ImageSource.gallery);
+                                  //     print(_imageFile);
+                                  //     if(_imageFile != null){
+                                  //       var updatePhoto = await model.changeProfilePicture(_imageFile, context);
+                                  //       if (updatePhoto) {
+                                  //         /*showToastWidget(IconToastWidget.success(msg: "Berhasil"),
+                                  //         context: context,
+                                  //         animation: StyledToastAnimation.slideFromBottom,
+                                  //         reverseAnimation: StyledToastAnimation.slideToBottom,
+                                  //         position: StyledToastPosition.center,
+                                  //         animDuration: Duration(seconds: 1),
+                                  //         duration: Duration(seconds: 4),
+                                  //         curve: Curves.elasticOut,
+                                  //         reverseCurve: Curves.fastOutSlowIn);*/
+                                  //         model.getProfile(context);
+                                  //         _imageFile = null;
+                                  //       }
+                                  //     }
+                                  //   },
+                                  // ),
+                                  // new ListTile(
+                                  //   leading: new Icon(Icons.delete, color: Colors.green),
+                                  //   title: new Text('Hapus foto profil', style: TextStyle(fontSize: 12),),
+                                  //   enabled: model.dataProfile.userImage != null ? true : false,
+                                  //   onTap: () async {
+                                  //     Navigator.pop(context);
+                                  //     var deletePhoto = await model.deleteProfilePicture(context);
+                                  //     if (deletePhoto) {
+                                  //       /*showToastWidget(IconToastWidget.success(msg: "Berhasil"),
+                                  //         context: context,
+                                  //         animation: StyledToastAnimation.slideFromBottom,
+                                  //         reverseAnimation: StyledToastAnimation.slideToBottom,
+                                  //         position: StyledToastPosition.center,
+                                  //         animDuration: Duration(seconds: 1),
+                                  //         duration: Duration(seconds: 4),
+                                  //         curve: Curves.elasticOut,
+                                  //         reverseCurve: Curves.fastOutSlowIn);*/
+                                  //       model.getProfile(context);
+                                  //       _imageFile = null;
+                                  //     }
+                                  //   },
+                                  // ),
+                                ],
+                              ),
+                            );
+                          }
+                      );
+                    },
+                    child: Badge(
+                      badgeColor: colorPrimary,
+                      shape: BadgeShape.circle,
+                      borderRadius: BorderRadius.circular(20),
+                      padding: EdgeInsets.all(10),
+                      toAnimate: false,
+                      position: BadgePosition.bottomEnd(end: -10, bottom: 0),
+                      badgeContent: Icon(FontAwesomeIcons.camera, color: Colors.white, size: 12,),
+                      child: ClipOval(
+                        child: data.user!.url_images == null || data.user!.url_images == "" ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 80, height: 80,) :
+                        CachedNetworkImage(
+                          imageUrl: data.user!.url_images!,
+                          imageBuilder: (context, imageProvider) => Container(
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(50)),
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                          placeholder: (context, url) => new SkeletonAnimation(
+                              child: Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.all(Radius.circular(50))
+                                ),
+                              )
+                          ),
+                          errorWidget: (context, url, error) => new Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.all(Radius.circular(50))
+                            ),
+                            child: Center(
+                              child: Icon(
+                                  Icons.error
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(width: 10,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Widi Ramadhan",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      SizedBox(height: 5,),
-                      Text(
-                        "Edit Profil >",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14
-                        ),
-                      ),
-                    ],
+                  SizedBox(height: 20,),
+                  Text(
+                    "Widi Ramadhan",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Text(
+                    "Edit Profil",
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14
+                    ),
                   ),
                 ],
               ),

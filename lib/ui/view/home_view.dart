@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:badges/badges.dart';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/helper/app_helper.dart';
@@ -13,8 +14,10 @@ import 'package:bima_finance/ui/view/career_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
 import 'package:bima_finance/ui/view/news_detail_view.dart';
 import 'package:bima_finance/ui/view/news_view.dart';
+import 'package:bima_finance/ui/view/notification_view.dart';
 import 'package:bima_finance/ui/view/ocr_guide_view.dart';
 import 'package:bima_finance/ui/view/payment_view.dart';
+import 'package:bima_finance/ui/view/photo_viewer_view.dart';
 import 'package:bima_finance/ui/view/product_view.dart';
 import 'package:bima_finance/ui/view/promo_detail_view.dart';
 import 'package:bima_finance/ui/view/promo_view.dart';
@@ -22,11 +25,13 @@ import 'package:bima_finance/ui/view/register_view.dart';
 import 'package:bima_finance/ui/widget/dialog_question.dart';
 import 'package:bima_finance/ui/widget/dialog_success.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -71,7 +76,6 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       //extendBodyBehindAppBar: true,
-      drawer: _drawerWidget(),
       body: FutureBuilder(
         future: checkSessionLogin(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -98,8 +102,8 @@ class _HomeViewState extends State<HomeView> {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      height: 180,
-                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 20),
+                                      height: 150,
+                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 40),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                             bottomRight: Radius.circular(30),
@@ -116,66 +120,112 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Scaffold.of(context).openDrawer();
-                                                    },
-                                                    child: Icon(
-                                                      FontAwesomeIcons.bars,
-                                                      color: Colors.white,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PhotoViewerView(path: data.user!.url_images),
+                                                      )
+                                                  );
+                                                },
+                                                child: ClipOval(
+                                                  child: data.user?.url_images! == null || data.user?.url_images! == "" ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 60, height: 60,) :
+                                                  CachedNetworkImage(
+                                                    imageUrl: data.user!.url_images!,
+                                                    imageBuilder: (context, imageProvider) => Container(
+                                                      height: 60,
+                                                      width: 60,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                                                        image: DecorationImage(
+                                                            image: imageProvider, fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                                                    placeholder: (context, url) => new SkeletonAnimation(
+                                                        child: Container(
+                                                          width: 60,
+                                                          height: 60,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.grey[300],
+                                                              borderRadius: BorderRadius.all(Radius.circular(50))
+                                                          ),
+                                                        )
+                                                    ),
+                                                    errorWidget: (context, url, error) => new Container(
+                                                      width: 60,
+                                                      height: 60,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey[300],
+                                                          borderRadius: BorderRadius.all(Radius.circular(50))
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                            Icons.error
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(width: 10,),
                                               Expanded(
                                                 flex: 1,
-                                                child: Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: GestureDetector(
-                                                    onTap: () {},
-                                                    child: Icon(
-                                                      FontAwesomeIcons.bell,
-                                                      color: Colors.white,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Hello,",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14
+                                                      ),
                                                     ),
-                                                  ),
+                                                    SizedBox(height: 5,),
+                                                    Text(
+                                                      isLogin == false ? "Dear" : "${data.user?.fullname == null ? "Dear" : data.user?.fullname}",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(height: 40,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Image.asset("assets/images/default_avatar.png", width: 60,),
+                                              ),
                                               SizedBox(width: 10,),
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Hello,",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14
-                                                    ),
+                                              IconButton(
+                                                onPressed: () async {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            NotificationView(),
+                                                      )
+                                                  ).then((value) async {
+                                                    await data.getNotification(context);
+                                                  });
+                                                },
+                                                icon: data.notification?.where((element) => element.notification_read == 1).toList().length == 0 ? Icon(
+                                                  FontAwesomeIcons.bell,
+                                                  color: Colors.white,
+                                                ) : Badge(
+                                                  badgeColor: Colors.red,
+                                                  shape: BadgeShape.circle,
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  padding: EdgeInsets.all(8),
+                                                  toAnimate: false,
+                                                  position: BadgePosition.topEnd(end: -15, top: -15),
+                                                  badgeContent: Text("${data.notification?.where((element) => element.notification_read == 1).toList().length}", style: TextStyle(fontSize: 12, color: Colors.white),),
+                                                  child: Icon(
+                                                    FontAwesomeIcons.bell,
+                                                    color: Colors.white,
                                                   ),
-                                                  SizedBox(height: 5,),
-                                                  Text(
-                                                    isLogin == false ? "Dear" : "${data.user?.fullname == null ? "Dear" : data.user?.fullname}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.bold
-                                                    ),
-                                                  )
-                                                ],
+                                                )
                                               )
                                             ],
                                           )
@@ -303,7 +353,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => NewsView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, colorPrimary, context),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -314,7 +364,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => PromoView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, Colors.orange, context),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -325,7 +375,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => ProductView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, Colors.green, context),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -336,7 +386,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => CreditSimulationView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, Colors.red, context),
                                           )
                                         ],
                                       ),
@@ -376,7 +426,7 @@ class _HomeViewState extends State<HomeView> {
                                                   ),
                                                 );
                                               }
-                                            }, context),
+                                            }, Colors.red, context),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -387,7 +437,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => BranchView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, Colors.green, context),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -398,7 +448,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => CareerView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, Colors.orange, context),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -409,7 +459,7 @@ class _HomeViewState extends State<HomeView> {
                                                   builder: (context) => PaymentView(),
                                                 ),
                                               );
-                                            }, context),
+                                            }, colorPrimary, context),
                                           )
                                         ],
                                       ),
@@ -455,17 +505,36 @@ class _HomeViewState extends State<HomeView> {
                                         ],
                                       ),
                                       SizedBox(height: 20,),
-                                      data.promo == null ? Center(child: CircularProgressIndicator()) : Container(
+                                      data.promo == null ?
+                                      Container(
+                                        height: 100,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: 3,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                margin: EdgeInsets.only(right: 10),
+                                                child: SkeletonAnimation(
+                                                    child: Container(
+                                                      height: 120,
+                                                      width: 250,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey[300],
+                                                          borderRadius: BorderRadius.circular(10)
+                                                      ),
+                                                    )
+                                                ),
+                                              );
+                                            }
+                                        ),
+                                      ) : Container(
                                         height: 100,
                                         child: data.promo!.isEmpty ? Center(child: Text("Data Tidak Ditemukan")) : ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: data.promo!.length > 5 ? 5 : data.promo!.length,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
-                                              Uint8List? imagePromo;
-                                              if(data.promo![index].promo_images! !=null ) {
-                                                imagePromo = Base64Codec().decode(data.promo![index].promo_images!);
-                                              }
                                               return GestureDetector(
                                                 onTap: () {
                                                   Navigator.push(
@@ -476,29 +545,42 @@ class _HomeViewState extends State<HomeView> {
                                                   );
                                                 },
                                                 child: Container(
-                                                  width: 250,
-                                                  height: 120,
                                                   margin: EdgeInsets.only(right: 10),
-                                                  decoration: data.promo![index].promo_images! != null ? BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Colors.grey[300]!, width: 1),
-                                                    image: DecorationImage(
-                                                      image: MemoryImage(imagePromo!),
-                                                      fit: BoxFit.cover,
-                                                      onError: (exception, stacktrace) {
-                                                        print(exception.toString());
-                                                        print(stacktrace.toString());
-                                                      }
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: data.promo![index].promo_images!,
+                                                    imageBuilder: (context, imageProvider) => Container(
+                                                      height: 120,
+                                                      width: 250,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        image: DecorationImage(
+                                                            image: imageProvider, fit: BoxFit.cover),
+                                                      ),
                                                     ),
-                                                  ) : BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      color: Colors.grey[300]
+                                                    placeholder: (context, url) => new SkeletonAnimation(
+                                                        child: Container(
+                                                          height: 120,
+                                                          width: 250,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.grey[300],
+                                                              borderRadius: BorderRadius.circular(10)
+                                                          ),
+                                                        )
+                                                    ),
+                                                    errorWidget: (context, url, error) => new Container(
+                                                      height: 120,
+                                                      width: 250,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey[300],
+                                                          borderRadius: BorderRadius.circular(10)
+                                                      ),
+                                                      child: Center(
+                                                        child: Icon(
+                                                            Icons.error
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                  // child: Text(
-                                                  //   "${data.promo![index].promo_images}",
-                                                  //   overflow: TextOverflow.ellipsis,
-                                                  //   maxLines: 1,
-                                                  // ),
                                                 ),
                                               );
                                             }
@@ -552,10 +634,6 @@ class _HomeViewState extends State<HomeView> {
                                           itemCount: data.news!.length > 5 ? 5 : data.news!.length,
                                           physics: NeverScrollableScrollPhysics(),
                                           itemBuilder: (context, index){
-                                            Uint8List? imageNews;
-                                            if(data.news![index].news_images! !=null ) {
-                                              imageNews = Base64Codec().decode(data.news![index].news_images!);
-                                            }
                                             return GestureDetector(
                                               onTap: () {
                                                 Navigator.push(
@@ -571,19 +649,39 @@ class _HomeViewState extends State<HomeView> {
                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Container(
-                                                      width: 100,
-                                                      height: 100,
-                                                      decoration: data.news![index].news_images! != null ? BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        border: Border.all(color: Colors.grey[300]!, width: 1),
-                                                        image: DecorationImage(
-                                                          image: MemoryImage(imageNews!),
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ) : BoxDecoration(
+                                                    CachedNetworkImage(
+                                                      imageUrl: data.news![index].news_images!,
+                                                      imageBuilder: (context, imageProvider) => Container(
+                                                        height: 100,
+                                                        width: 100,
+                                                        decoration: BoxDecoration(
                                                           borderRadius: BorderRadius.circular(10),
-                                                          color: Colors.grey[300]
+                                                          image: DecorationImage(
+                                                              image: imageProvider, fit: BoxFit.cover),
+                                                        ),
+                                                      ),
+                                                      placeholder: (context, url) => new SkeletonAnimation(
+                                                          child: Container(
+                                                            height: 100,
+                                                            width: 100,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.grey[300],
+                                                                borderRadius: BorderRadius.circular(10)
+                                                            ),
+                                                          )
+                                                      ),
+                                                      errorWidget: (context, url, error) => new Container(
+                                                        height: 100,
+                                                        width: 100,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.grey[300],
+                                                            borderRadius: BorderRadius.circular(10)
+                                                        ),
+                                                        child: Center(
+                                                          child: Icon(
+                                                              Icons.error
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                     SizedBox(width: 10,),
@@ -670,7 +768,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _tileMenu(IconData icon, String title, VoidCallback onTap, BuildContext context){
+  Widget _tileMenu(IconData icon, String title, VoidCallback onTap, Color colors, BuildContext context){
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -680,12 +778,12 @@ class _HomeViewState extends State<HomeView> {
             height: 50,
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-                color: colorPrimary.withOpacity(0.1),
+                color: colors.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10)
             ),
             child: Icon(
               icon,
-              color: colorPrimary,
+              color: colors,
             ),
           ),
           SizedBox(height: 10,),
@@ -700,210 +798,6 @@ class _HomeViewState extends State<HomeView> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _drawerWidget(){
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          _drawerHeader(),
-          if(isLogin == true) ...[
-            _drawerItem(
-                icon: FontAwesomeIcons.fileContract,
-                text: 'Daftar Kontrak',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContractView(isBack: true,),
-                    ),
-                  );
-                }),
-            _drawerItem(
-                icon: FontAwesomeIcons.history,
-                text: 'Riwayat Pembayaran',
-                onTap: () {
-
-                }),
-            _drawerItem(
-                icon: FontAwesomeIcons.creditCard,
-                text: 'Simulasi Kredit',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreditSimulationView(),
-                    ),
-                  );
-                }),
-            _drawerItem(
-                icon: FontAwesomeIcons.solidIdBadge,
-                text: 'Pengajuan Kredit',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OCRGuideView(),
-                    ),
-                  );
-                }),
-            Divider(height: 25, thickness: 1),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
-              child: Text("Akun",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                  )),
-            ),
-            _drawerItem(
-                icon: FontAwesomeIcons.idCard,
-                text: 'Ubah Profil',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContractView(),
-                    ),
-                  );
-                }),
-            _drawerItem(
-                icon: FontAwesomeIcons.lock,
-                text: 'Ubah Kata Sandi',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContractView(),
-                    ),
-                  );
-                }),
-            _drawerItem(
-              icon: FontAwesomeIcons.signOutAlt,
-              text: 'Keluar',
-              onTap: () {
-                DialogQuestion(
-                    context: context,
-                    path: "assets/images/img_failed.png",
-                    content: "Apakah anda yakin ingin keluar \ndari akun ini ?",
-                    title: "Logout",
-                    appName: "",
-                    imageHeight: 100,
-                    imageWidth: 100,
-                    dialogHeight: 260,
-                    buttonConfig: ButtonConfig(
-                      dialogDone: "Yakin",
-                      dialogCancel: "Batal",
-                      buttonDoneColor: colorPrimary,
-                    ),
-                    submit: () async {
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      prefs.remove('user_id');
-                      prefs.remove('email');
-                      prefs.remove('token');
-                      prefs.remove('is_login');
-
-                      SuccessDialog(
-                        context: context,
-                        title: "Sukses",
-                        content: "Berhasil keluar dari akun",
-                        imageHeight: 100,
-                        imageWidth: 100,
-                        dialogHeight: 260,
-                      );
-                      new Future.delayed(new Duration(seconds: 1), () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        HomeViewModel home = HomeViewModel();
-                        home.init(context);
-                      });
-                    });
-              },)
-          ] else ...[
-            _drawerItem(
-                icon: FontAwesomeIcons.idCard,
-                text: 'Daftar Akun',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegisterView(),
-                    ),
-                  ).then((value) async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    if(prefs.getBool('is_login') == true){
-                      HomeViewModel model = new HomeViewModel();
-                      model.getUser(context);
-                      setState(() {
-                        isLogin = true;
-                      });
-                    } else {
-                      setState(() {
-                        isLogin = false;
-                      });
-                    }
-                  });
-                }),
-            _drawerItem(
-                icon: FontAwesomeIcons.signInAlt,
-                text: 'Login',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginView(),
-                    ),
-                  ).then((value) async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    if(prefs.getBool('is_login') == true){
-                      HomeViewModel model = new HomeViewModel();
-                      model.getUser(context);
-                      setState(() {
-                        isLogin = true;
-                      });
-                    } else {
-                      setState(() {
-                        isLogin = false;
-                      });
-                    }
-                  });
-                }),
-          ]
-        ],
-      ),
-    );
-  }
-
-  Widget _drawerHeader() {
-    return UserAccountsDrawerHeader(
-      currentAccountPicture: ClipOval(
-        child: Image(
-            image: AssetImage('assets/images/default_avatar.png'), fit: BoxFit.cover),
-      ),
-      accountName: Text('${name}'),
-      accountEmail: Text('${email}'),
-    );
-  }
-
-  Widget _drawerItem({IconData? icon, String? text, GestureTapCallback? onTap}) {
-    return ListTile(
-      title: Row(
-        children: <Widget>[
-          Icon(icon),
-          Padding(
-            padding: EdgeInsets.only(left: 25.0),
-            child: Text(
-              text!,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-      onTap: onTap,
     );
   }
 }

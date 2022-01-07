@@ -30,7 +30,8 @@ class Api {
   String deleteAddress = endpoint + "deleteaddress";
 
 
-  String getSlider = endpoint + "getslider";
+  String getNotification = endpoint + "getnotification";
+  String updateStatusNotification = endpoint + "updatestatusnotification";
   String getBranch = endpoint + "getbranch";
   String getNews = endpoint + "getnews";
   String getPromo = endpoint + "getpromo";

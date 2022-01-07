@@ -10,8 +10,10 @@ import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/news_detail_view.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
 import 'package:bima_finance/ui/widget/textfield_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
 import 'package:html/parser.dart';
 
@@ -102,10 +104,6 @@ class _NewsViewState extends State<NewsView> {
                           itemCount: news!.length,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            Uint8List? image;
-                            if(news![index].news_images! !=null ) {
-                              image = Base64Codec().decode(news![index].news_images!);
-                            }
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -121,18 +119,39 @@ class _NewsViewState extends State<NewsView> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      width: 100,
-                                      height: 100,
-                                      decoration: news![index].news_images! !=null ? BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                          image: MemoryImage(image!),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ) : BoxDecoration(
+                                  CachedNetworkImage(
+                                    imageUrl: data.news![index].news_images!,
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(10),
-                                          color: Colors.grey[300]
+                                          image: DecorationImage(
+                                              image: imageProvider, fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) => new SkeletonAnimation(
+                                          child: Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[300],
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                          )
+                                      ),
+                                      errorWidget: (context, url, error) => new Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                              Icons.error
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: 10,),
