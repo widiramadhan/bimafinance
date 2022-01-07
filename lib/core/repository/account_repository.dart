@@ -128,7 +128,7 @@ class AccountRepository extends ChangeNotifier {
             "Authorization": "Bearer "+prefs.getString('token')!}),
           data: FormData.fromMap({
             'user_id': prefs.getString('user_id'),
-            'profile_picture': await MultipartFile.fromFile(
+            'images': await MultipartFile.fromFile(
               file.path,
               filename: fileName,
             ),

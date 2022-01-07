@@ -122,6 +122,7 @@ class _HomeViewState extends State<HomeView> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
+                                              data.user == null ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 60, height: 60,) :
                                               GestureDetector(
                                                 onTap: () {
                                                   Navigator.push(
@@ -133,7 +134,7 @@ class _HomeViewState extends State<HomeView> {
                                                   );
                                                 },
                                                 child: ClipOval(
-                                                  child: data.user?.url_images! == null || data.user?.url_images! == "" ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 60, height: 60,) :
+                                                  child: data.user!.url_images == null || data.user!.url_images == "" ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 60, height: 60,) :
                                                   CachedNetworkImage(
                                                     imageUrl: data.user!.url_images!,
                                                     imageBuilder: (context, imageProvider) => Container(
@@ -198,6 +199,10 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                               ),
                                               SizedBox(width: 10,),
+                                              data.notification == null ? Icon(
+                                                FontAwesomeIcons.bell,
+                                                color: Colors.white,
+                                              ) :
                                               IconButton(
                                                 onPressed: () async {
                                                   Navigator.push(

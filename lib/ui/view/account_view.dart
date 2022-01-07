@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/viewmodel/account_viewmodel.dart';
@@ -13,9 +15,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_text/skeleton_text.dart';
-import 'package:toast/toast.dart';
 
 class AccountView extends StatefulWidget {
   @override
@@ -30,11 +33,66 @@ class _AccountViewState extends State<AccountView> {
   }
 
   bool isLogin = false;
+  File? _imageFile;
+  dynamic _pickImageError;
+  String? _retrieveDataError;
+  final picker = ImagePicker();
 
   Future<bool> checkSessionLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isLogin = prefs.getBool('is_login') ?? false;
     return isLogin;
+  }
+
+   _onImageButtonPressed(ImageSource? source) async {
+    try {
+      final pickedFile = await picker.getImage(source: source!);
+      setState(() {
+        if (pickedFile != null) {
+          _imageFile = File(pickedFile.path);
+        } else {
+          print('No image selected.');
+        }
+      });
+    } catch (e) {
+      _pickImageError = e;
+    }
+    if(_imageFile != null){
+      await _cropImage();
+    }
+    setState(() {});
+  }
+
+  Future<Null> _cropImage() async {
+    File? croppedFile = await ImageCropper.cropImage(
+        sourcePath: _imageFile!.path,
+        aspectRatioPresets: Platform.isAndroid ? [CropAspectRatioPreset.square]
+            : [CropAspectRatioPreset.square],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Colors.white,
+            toolbarWidgetColor: colorPrimary,
+            initAspectRatio: CropAspectRatioPreset.square,
+            hideBottomControls: true,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+          cancelButtonTitle: 'Batal',
+          doneButtonTitle: 'Gunakan',
+          resetButtonHidden: true,
+          rotateButtonsHidden: true,
+          aspectRatioPickerButtonHidden: true,
+          aspectRatioLockEnabled: true,
+        )
+    );
+
+    if (croppedFile != null) {
+      _imageFile = croppedFile;
+      setState((){});
+    }else{
+      _imageFile = null;
+      setState((){});
+    }
   }
 
   @override
@@ -186,78 +244,51 @@ class _AccountViewState extends State<AccountView> {
                                         }
                                       }
                                   ),
-                                  // new ListTile(
-                                  //   leading: new Icon(Icons.camera_alt, color: Colors.green),
-                                  //   title: new Text('Ganti foto profil dari kamera', style: TextStyle(fontSize: 12),),
-                                  //   onTap: () async {
-                                  //     Navigator.pop(context);
-                                  //     await _onImageButtonPressed(ImageSource.camera);
-                                  //     print(_imageFile);
-                                  //     if(_imageFile != null){
-                                  //       var updatePhoto = await model.changeProfilePicture(_imageFile, context);
-                                  //       if (updatePhoto) {
-                                  //         /*showToastWidget(IconToastWidget.success(msg: "Berhasil"),
-                                  //         context: context,
-                                  //         animation: StyledToastAnimation.slideFromBottom,
-                                  //         reverseAnimation: StyledToastAnimation.slideToBottom,
-                                  //         position: StyledToastPosition.center,
-                                  //         animDuration: Duration(seconds: 1),
-                                  //         duration: Duration(seconds: 4),
-                                  //         curve: Curves.elasticOut,
-                                  //         reverseCurve: Curves.fastOutSlowIn);*/
-                                  //         model.getProfile(context);
-                                  //         _imageFile = null;
-                                  //       }
-                                  //     }
-                                  //   },
-                                  // ),
-                                  // new ListTile(
-                                  //   leading: new Icon(Icons.photo, color: Colors.green),
-                                  //   title: new Text('Ganti foto profil dari galeri', style: TextStyle(fontSize: 12),),
-                                  //   onTap: () async {
-                                  //     Navigator.pop(context);
-                                  //     await _onImageButtonPressed(ImageSource.gallery);
-                                  //     print(_imageFile);
-                                  //     if(_imageFile != null){
-                                  //       var updatePhoto = await model.changeProfilePicture(_imageFile, context);
-                                  //       if (updatePhoto) {
-                                  //         /*showToastWidget(IconToastWidget.success(msg: "Berhasil"),
-                                  //         context: context,
-                                  //         animation: StyledToastAnimation.slideFromBottom,
-                                  //         reverseAnimation: StyledToastAnimation.slideToBottom,
-                                  //         position: StyledToastPosition.center,
-                                  //         animDuration: Duration(seconds: 1),
-                                  //         duration: Duration(seconds: 4),
-                                  //         curve: Curves.elasticOut,
-                                  //         reverseCurve: Curves.fastOutSlowIn);*/
-                                  //         model.getProfile(context);
-                                  //         _imageFile = null;
-                                  //       }
-                                  //     }
-                                  //   },
-                                  // ),
-                                  // new ListTile(
-                                  //   leading: new Icon(Icons.delete, color: Colors.green),
-                                  //   title: new Text('Hapus foto profil', style: TextStyle(fontSize: 12),),
-                                  //   enabled: model.dataProfile.userImage != null ? true : false,
-                                  //   onTap: () async {
-                                  //     Navigator.pop(context);
-                                  //     var deletePhoto = await model.deleteProfilePicture(context);
-                                  //     if (deletePhoto) {
-                                  //       /*showToastWidget(IconToastWidget.success(msg: "Berhasil"),
-                                  //         context: context,
-                                  //         animation: StyledToastAnimation.slideFromBottom,
-                                  //         reverseAnimation: StyledToastAnimation.slideToBottom,
-                                  //         position: StyledToastPosition.center,
-                                  //         animDuration: Duration(seconds: 1),
-                                  //         duration: Duration(seconds: 4),
-                                  //         curve: Curves.elasticOut,
-                                  //         reverseCurve: Curves.fastOutSlowIn);*/
-                                  //       model.getProfile(context);
-                                  //       _imageFile = null;
-                                  //     }
-                                  //   },
-                                  // ),
+                                  new ListTile(
+                                    leading: new Icon(Icons.camera_alt, color: colorPrimary),
+                                    title: new Text('Ganti foto profil dari kamera', style: TextStyle(fontSize: 12),),
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      await _onImageButtonPressed(ImageSource.camera);
+                                      print(_imageFile);
+                                      if(_imageFile != null){
+                                        var updatePhoto = await data.updateUserImages(_imageFile!, context);
+                                        if (updatePhoto) {
+                                          data.getUser(context);
+                                          _imageFile = null;
+                                        }
+                                      }
+                                    },
+                                  ),
+                                  new ListTile(
+                                    leading: new Icon(Icons.photo, color: colorPrimary),
+                                    title: new Text('Ganti foto profil dari galeri', style: TextStyle(fontSize: 12),),
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      await _onImageButtonPressed(ImageSource.gallery);
+                                      print(_imageFile);
+                                      if(_imageFile != null){
+                                        var updatePhoto = await data.updateUserImages(_imageFile!, context);
+                                        if (updatePhoto) {
+                                          data.getUser(context);
+                                          _imageFile = null;
+                                        }
+                                      }
+                                    },
+                                  ),
+                                  new ListTile(
+                                    leading: new Icon(Icons.delete, color: colorPrimary),
+                                    title: new Text('Hapus foto profil', style: TextStyle(fontSize: 12),),
+                                    enabled: data.user!.url_images != null ? true : false,
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      var deletePhoto = await data.deleteProfilePicture(context);
+                                      if (deletePhoto) {
+                                        data.getUser(context);
+                                        _imageFile = null;
+                                      }
+                                    },
+                                  ),
                                 ],
                               ),
                             );

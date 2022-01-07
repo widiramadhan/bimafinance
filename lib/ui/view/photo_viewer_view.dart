@@ -23,9 +23,10 @@ class PhotoViewerView extends StatelessWidget {
             )
         ),
         body: Container(
-            child: PhotoView(
-              imageProvider: NetworkImage(path!),
-            )
+          color: Colors.black,
+          child: PhotoView(
+            imageProvider: NetworkImage(path!),
+          )
         )
     );
   }
