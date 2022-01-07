@@ -120,6 +120,32 @@ class _NotificationViewState extends State<NotificationView> {
                                               style: TextStyle(
                                                   height: 1.5
                                               ),
+                                            ),
+                                            SizedBox(height: 10,),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    "${data.notification![index].created_date}",
+                                                    style: TextStyle(
+                                                        height: 1.5
+                                                    ),
+                                                  ),
+                                                ),
+                                                // Expanded(
+                                                //   flex: 1,
+                                                //   child: Align(
+                                                //     alignment: Alignment.centerRight,
+                                                //     child: Text(
+                                                //       "${data.notification![index].created_time}",
+                                                //       style: TextStyle(
+                                                //           height: 1.5
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                // )
+                                              ],
                                             )
                                           ],
                                         ),

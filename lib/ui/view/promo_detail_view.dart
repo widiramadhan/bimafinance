@@ -60,8 +60,8 @@ class _PromoDetailViewState extends State<PromoDetailView> {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            topLeft: Radius.circular(10)
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30)
                         ),
                         image: DecorationImage(
                             image: imageProvider, fit: BoxFit.cover),
@@ -74,8 +74,8 @@ class _PromoDetailViewState extends State<PromoDetailView> {
                           decoration: BoxDecoration(
                               color: Colors.grey[300],
                               borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  topLeft: Radius.circular(10)
+                                  bottomLeft: Radius.circular(30),
+                                  bottomRight: Radius.circular(30)
                               )
                           ),
                         )
@@ -86,8 +86,8 @@ class _PromoDetailViewState extends State<PromoDetailView> {
                       decoration: BoxDecoration(
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              topLeft: Radius.circular(10)
+                              bottomLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30)
                           )
                       ),
                       child: Center(
