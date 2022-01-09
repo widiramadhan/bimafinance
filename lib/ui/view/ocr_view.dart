@@ -413,7 +413,7 @@ class _OCRViewState extends State<OCRView> {
                                         onPressed: _messageTutorial == false ? null : () async {
                                           onTakePictureButtonPressed();
                                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          nik = "3216072005920012";
+                                          //nik = "3216072005920012";
                                           NIKModel result = await NIKValidator.instance.parse(nik: nik);
                                           /// When nik is valid
                                           if (result.valid!) {
