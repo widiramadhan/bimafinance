@@ -37,7 +37,7 @@ class _NotificationViewState extends State<NotificationView> {
         title: Text("Notifikasi", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -110,7 +110,8 @@ class _NotificationViewState extends State<NotificationView> {
                                             Text(
                                               "${data.notification![index].notification_title}",
                                               style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 14,
+                                                  height: 1.5,
                                                   fontWeight: FontWeight.bold
                                               ),
                                             ),

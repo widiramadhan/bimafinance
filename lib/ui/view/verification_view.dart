@@ -81,7 +81,7 @@ class _VerificationViewState extends State<VerificationView> {
         title: Text("Verifikasi Data", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -102,7 +102,7 @@ class _VerificationViewState extends State<VerificationView> {
                   flex: 1,
                   child: StepWizardWidget(
                     active: true,
-                    title: "Konfirmasi Data",
+                    title: "Data Pemohon",
                   ),
                 ),
                 SizedBox(width: 10),
@@ -110,7 +110,7 @@ class _VerificationViewState extends State<VerificationView> {
                   flex: 1,
                   child: StepWizardWidget(
                     active: false,
-                    title: "Informasi Pekerjaan",
+                    title: "Pekerjaan",
                   ),
                 ),
                 SizedBox(width: 10),

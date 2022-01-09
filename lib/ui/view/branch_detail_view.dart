@@ -4,9 +4,11 @@ import 'dart:typed_data';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/model/branch_model.dart';
 import 'package:bima_finance/ui/widget/main_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:latlong2/latlong.dart';
@@ -40,113 +42,131 @@ class _BranchDetailViewState extends State<BranchDetailView> {
     }
   }
 
-  Uint8List? image;
-
   @override
   void initState() {
-   image = Base64Codec().decode(widget.data!.branch_images!);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        title: Text("Kantor Cabang", style: TextStyle(color: colorPrimary),),
+        centerTitle: true,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.white),
         elevation: 0.0,
+        brightness: Brightness.light,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: colorPrimary,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 300,
-              child: Stack(
-                children: [
-                  Container(
-                    height: 300,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: MemoryImage(image!),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30)
-                        )
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CachedNetworkImage(
+                imageUrl: widget.data!.branch_images!,
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => new SkeletonAnimation(
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    )
+                ),
+                errorWidget: (context, url, error) => new Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: Icon(
+                        Icons.error
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Kantor Cabang "+widget.data!.branch_name!, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                  SizedBox(height: 10,),
-                  Text(widget.data!.branch_address!, style: TextStyle(fontSize: 14,)),
-                  SizedBox(height: 20,),
-                  Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20)
+              SizedBox(height: 20,),
+              Text("Kantor Cabang "+widget.data!.branch_name!, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              SizedBox(height: 10,),
+              Text(widget.data!.branch_address!, style: TextStyle(fontSize: 14, height: 1.5)),
+              SizedBox(height: 20,),
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: FlutterMap(
+                  options: MapOptions(
+                    center: LatLng(widget.data!.branch_latitude!, widget.data!.branch_longitude!),
+                    zoom: 13.0,
+                  ),
+                  layers: [
+                    TileLayerOptions(
+                      urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      subdomains: ['a', 'b', 'c'],
+                      attributionBuilder: (_) {
+                        return Text("© OpenStreetMap contributors");
+                      },
                     ),
-                    child: FlutterMap(
-                      options: MapOptions(
-                        center: LatLng(widget.data!.branch_latitude!, widget.data!.branch_longitude!),
-                        zoom: 13.0,
-                      ),
-                      layers: [
-                        TileLayerOptions(
-                          urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                          subdomains: ['a', 'b', 'c'],
-                          attributionBuilder: (_) {
-                            return Text("© OpenStreetMap contributors");
-                          },
-                        ),
-                        MarkerLayerOptions(
-                          markers: [
-                            Marker(
-                              width: 80.0,
-                              height: 80.0,
-                              point: LatLng(widget.data!.branch_latitude!, widget.data!.branch_longitude!),
-                              builder: (ctx) =>
-                                  Container(
-                                    child: Icon(
-                                      Icons.location_on,
-                                      color: colorPrimary,
-                                    ),
-                                  ),
-                            ),
-                          ],
+                    MarkerLayerOptions(
+                      markers: [
+                        Marker(
+                          width: 80.0,
+                          height: 80.0,
+                          point: LatLng(widget.data!.branch_latitude!, widget.data!.branch_longitude!),
+                          builder: (ctx) =>
+                              Container(
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: colorPrimary,
+                                ),
+                              ),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 20,),
-                  MainButton(
-                    text: "Lihat di Peta",
-                    onPressed: () {
-                      _launchMaps(widget.data!.branch_latitude, widget.data!.branch_longitude, context);
-                    },
-                    textColor: colorPrimary,
-                    borderColor: colorPrimary,
-                    color: Colors.white,
-                    radius: 10,
-                    width: double.infinity,
-                    height: 50,
-                  )
-                ],
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
+              SizedBox(height: 50,),
+              MainButton(
+                text: "Lihat di Peta",
+                onPressed: () {
+                  _launchMaps(widget.data!.branch_latitude, widget.data!.branch_longitude, context);
+                },
+                textColor: Colors.white,
+                borderColor: colorSecondary,
+                color: colorSecondary,
+                radius: 50,
+                width: double.infinity,
+                height: 50,
+              )
+            ],
+          ),
+        )
       ),
     );
   }

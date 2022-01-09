@@ -73,7 +73,7 @@ class _WorkInformationViewState extends State<WorkInformationView> {
         title: Text("Verifikasi Data", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

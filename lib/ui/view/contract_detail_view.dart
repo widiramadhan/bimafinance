@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/constant/viewstate.dart';
+import 'package:bima_finance/core/model/contract_model.dart';
 import 'package:bima_finance/core/model/credit_model.dart';
 import 'package:bima_finance/core/viewmodel/credit_viewmodel.dart';
 import 'package:bima_finance/ui/view/auth_view.dart';
@@ -18,58 +19,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CreditApplyResultView extends StatefulWidget {
-  CreditModel? data;
-  String? nik;
-  String? name;
-  String? dob;
-  String? gender;
-  String? address;
-  String? province;
-  String? city;
-  String? subDistrict;
-  String? postalCode;
-  String? phoneNumber;
-  String? motherName;
-  String? emergencyContact;
-  File? ktpPhoto;
-  File? selfiePhoto;
-  String? companyName;
-  String? companyPhone;
-  String? companyAddress;
-  int? job;
-  int? sallary;
+class ContractDetailView extends StatefulWidget {
+  ContractModel? data;
 
-
-  CreditApplyResultView({
+  ContractDetailView({
     Key? key,
-    required this.data,
-    required this.nik,
-    required this.name,
-    required this.dob,
-    required this.gender,
-    required this.address,
-    required this.province,
-    required this.city,
-    required this.subDistrict,
-    required this.postalCode,
-    required this.phoneNumber,
-    required this.motherName,
-    required this.emergencyContact,
-    required this.ktpPhoto,
-    required this.selfiePhoto,
-    required this.companyName,
-    required this.companyPhone,
-    required this.companyAddress,
-    required this.job,
-    required this.sallary});
+    required this.data,});
 
 
   @override
-  _CreditApplyResultViewState createState() => _CreditApplyResultViewState();
+  _ContractDetailViewState createState() => _ContractDetailViewState();
 }
 
-class _CreditApplyResultViewState extends State<CreditApplyResultView> {
+class _ContractDetailViewState extends State<ContractDetailView> {
   final formatter = new NumberFormat("#,###");
   DateTime now = new DateTime.now();
   DateFormat date = new DateFormat('yyyy-MM-dd');
@@ -86,10 +48,10 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Verifikasi Data", style: TextStyle(color: colorPrimary),),
+        title: Text("Detail", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2.0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -98,39 +60,6 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
           child: Icon(
             Icons.arrow_back,
             color: colorPrimary,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: StepWizardWidget(
-                    active: true,
-                    title: "Konfirmasi Data",
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: StepWizardWidget(
-                    active: true,
-                    title: "Informasi Pekerjaan",
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: StepWizardWidget(
-                    active: true,
-                    title: "Pengajuan Kredit",
-                  ),
-                )
-              ],
-            ),
           ),
         ),
       ),
@@ -147,6 +76,52 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Status Pengajuan",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                    "${widget.data!.statusName!.toLowerCase() == 'submission' ? 'Diajukan' : widget.data!.statusName!.toLowerCase() == 'on review' ? 'Sedang ditinjau' : widget.data!.statusName!.toLowerCase() == 'approved' ? 'Disetujui' : 'Ditolak'}",
+                                    style: TextStyle(
+                                      color:
+                                      widget.data!.statusName!.toLowerCase() == 'submission' ? colorPrimary :
+                                      widget.data!.statusName!.toLowerCase() == 'on review' ? colorSecondary :
+                                      widget.data!.statusName!.toLowerCase() == 'approved' ? Colors.green :
+                                      Colors.red,
+                                    ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SeparatorWidget(),
+                          DetailWidget(
+                              title: "Tanggal Pengajuan",
+                              subtitle: "${widget.data!.dob}"
+                          ),
+                          SizedBox(height: 20,),
+                        ],
+                      ),
+                    ),
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(
@@ -169,17 +144,27 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                         children: [
                           DetailWidget(
                               title: "NIK",
-                              subtitle: "${widget.nik}"
-                          ),
-                          SeparatorWidget(),
-                          DetailWidget(
-                              title: "Nama",
-                              subtitle: "${widget.name}"
+                              subtitle: "${widget.data!.nik}"
                           ),
                           SeparatorWidget(),
                           DetailWidget(
                               title: "Tanggal Lahir",
-                              subtitle: "${widget.dob}"
+                              subtitle: "${widget.data!.dob}"
+                          ),
+                          SeparatorWidget(),
+                          DetailWidget(
+                              title: "Nomor Telepon",
+                              subtitle: "${widget.data!.phoneNumber}"
+                          ),
+                          SeparatorWidget(),
+                          DetailWidget(
+                              title: "Nama Gadis Ibu Kandung",
+                              subtitle: "${widget.data!.motherName}"
+                          ),
+                          SeparatorWidget(),
+                          DetailWidget(
+                              title: "Kontak Darurat",
+                              subtitle: "${widget.data!.emergencyContact}"
                           ),
                         ],
                       ),
@@ -212,18 +197,18 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                           SeparatorWidget(),
                           DetailWidget(
                               title: "Tipe Pembiayaan",
-                              subtitle: "${widget.data!.product_name}"
+                              subtitle: "${widget.data!.productName}"
                           ),
                           SeparatorWidget(),
                           DetailWidget(
-                              title: widget.data!.product_id != 3
+                              title: widget.data!.productId != 3
                                   ? "Harga Kendaraan"
                                   : "Jumlah Pinjaman",
-                              subtitle: widget.data!.product_id != 3
+                              subtitle: widget.data!.productId != 3
                                   ? "Rp. ${formatter.format(
-                                  widget.data!.price)} "
+                                  widget.data!.amount)} "
                                   : "Rp. ${formatter.format(
-                                  widget.data!.loan_amount)}"
+                                  widget.data!.amount)}"
                           ),
                           SeparatorWidget(),
                           DetailWidget(
@@ -234,7 +219,7 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                           DetailWidget(
                               title: "Uang Muka",
                               subtitle: "Rp. ${formatter.format(
-                                  widget.data!.dp)}"
+                                  widget.data!.downPayment)}"
                           ),
                           SeparatorWidget(),
                           DetailWidget(
@@ -252,56 +237,6 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
             ),
           );
         }
-      ),
-      bottomNavigationBar: Container(
-        height: 70,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: MainButton(
-          text: "AJUKAN KREDIT",
-          color: colorPrimary,
-          textColor: Colors.white,
-          radius: 20,
-          onPressed: () async {
-            CreditViewModel model = new CreditViewModel();
-            var success = await model.applyCredit(
-                widget.nik,
-                widget.dob,
-                widget.gender,
-                widget.address,
-                widget.phoneNumber,
-                widget.motherName,
-                widget.emergencyContact,
-                widget.province,
-                widget.city,
-                widget.subDistrict,
-                widget.postalCode,
-                widget.ktpPhoto,
-                widget.selfiePhoto,
-                widget.companyName,
-                widget.companyPhone,
-                widget.companyAddress,
-                widget.job,
-                widget.sallary,
-                widget.data!.product_id,
-                widget.data!.product_id != 3 ? widget.data!.price : widget.data!.loan_amount,
-                widget.data!.tenor,
-                widget.data!.dp,
-                widget.data!.interest_per_month,
-                widget.data!.total_interest,
-                widget.data!.total_debt,
-                widget.data!.instalment,
-                context);
-            if(success == true) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      SuccessView(),
-                ),
-              );
-            }
-          },
-        ),
       ),
     );
   }

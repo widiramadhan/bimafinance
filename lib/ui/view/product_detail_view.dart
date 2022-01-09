@@ -9,11 +9,13 @@ import 'package:bima_finance/ui/view/auth_view.dart';
 import 'package:bima_finance/ui/view/ocr_guide_view.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
 import 'package:bima_finance/ui/widget/main_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:latlong2/latlong.dart';
@@ -31,11 +33,9 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
-  Uint8List? image;
 
   @override
   void initState() {
-   image = Base64Codec().decode(widget.data!.product_banner!);
     super.initState();
   }
 
@@ -53,24 +53,48 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 300,
-              child: Stack(
-                children: [
-                  Container(
+            CachedNetworkImage(
+              imageUrl: widget.data!.product_banner!,
+              imageBuilder: (context, imageProvider) => Container(
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30)
+                  ),
+                  image: DecorationImage(
+                      image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+              placeholder: (context, url) => new SkeletonAnimation(
+                  child: Container(
                     height: 300,
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: MemoryImage(image!),
-                          fit: BoxFit.cover,
-                        ),
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(30),
                             bottomRight: Radius.circular(30)
                         )
                     ),
+                  )
+              ),
+              errorWidget: (context, url, error) => new Container(
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30)
+                    )
+                ),
+                child: Center(
+                  child: Icon(
+                      Icons.error
                   ),
-                ],
+                ),
               ),
             ),
             Container(

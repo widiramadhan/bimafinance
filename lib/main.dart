@@ -4,6 +4,7 @@ import 'package:bima_finance/locator.dart';
 import 'package:bima_finance/ui/view/splash_screen_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   setupLocator();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         primaryColor: colorPrimary,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: TextTheme(bodyText1: TextStyle(fontSize: 12), bodyText2: TextStyle(fontSize: 12)),
-        fontFamily: 'DMSans',
+        fontFamily: GoogleFonts.montserrat().fontFamily,
         scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,

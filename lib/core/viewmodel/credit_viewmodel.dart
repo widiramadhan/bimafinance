@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bima_finance/core/constant/viewstate.dart';
+import 'package:bima_finance/core/model/contract_model.dart';
 import 'package:bima_finance/core/model/credit_model.dart';
 import 'package:bima_finance/core/model/job_model.dart';
 import 'package:bima_finance/core/model/product_model.dart';
@@ -21,6 +22,7 @@ class CreditViewModel extends BaseViewModel {
   List<ProductModel>? product;
   List<JobModel>? job;
   List<SallaryModel>? sallary;
+  List<ContractModel>? contract;
   CreditModel? credit;
 
 
@@ -41,6 +43,13 @@ class CreditViewModel extends BaseViewModel {
   Future getSallary(BuildContext context) async {
     setState(ViewState.Busy);
     sallary = await masterRepository.getSallary(context);
+    notifyListeners();
+    setState(ViewState.Idle);
+  }
+
+  Future getContract(BuildContext context) async {
+    setState(ViewState.Busy);
+    contract = await creditRepository.getContract(context);
     notifyListeners();
     setState(ViewState.Idle);
   }

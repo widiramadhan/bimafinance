@@ -25,7 +25,7 @@ class _OCRGuideViewState extends State<OCRGuideView> {
           title: Text("Panduan OCR", style: TextStyle(color: colorPrimary),),
           centerTitle: true,
           backgroundColor: Colors.white,
-          elevation: 2,
+          elevation: 0,
           brightness: Brightness.light,
           leading: GestureDetector(
             onTap: () {

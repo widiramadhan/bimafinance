@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bima_finance/core/constant/api.dart';
 import 'package:bima_finance/core/helper/dio_exception.dart';
+import 'package:bima_finance/core/model/contract_model.dart';
 import 'package:bima_finance/core/model/credit_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,8 +86,36 @@ class CreditRepository extends ChangeNotifier {
         filename: selfieFile,
       );
 
+      print("user_id -> ${userId}");
+      print("nik -> ${nik}");
+      print("dob -> ${dob}");
+      print("gender -> ${gender}");
+      print("address -> ${address}");
+      print("phone_number -> ${phoneNumber}");
+      print("mother_name -> ${motherName}");
+      print("emergency_contact -> ${emergencyContact}");
+      print("province -> ${province}");
+      print("city -> ${city}");
+      print("sub_district -> ${subDistrict}");
+      print("postal_code -> ${postalCode}");
+      print("company_name -> ${companyName}");
+      print("company_phone_number -> ${companyPhoneNumber}");
+      print("company_address -> ${companyAddress}");
+      print("job_id -> ${jobId}");
+      print("sallary_id -> ${sallaryId}");
+      print("product_id -> ${productId}");
+      print("amount -> ${amount}");
+      print("tenor -> ${tenor}");
+      print("dp -> ${downPayment}");
+      print("interest_per_month -> ${interestPerMonth}");
+      print("total_interest -> ${totalInterest}");
+      print("total_debt -> ${totalDebt}");
+      print("instalment -> ${installment}");
+
       response = await dio.post(Api().applyCredit,
-          options: Options(headers: {"Accept": "application/json",}),
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer "+prefs.getString('token')!}),
           data: FormData.fromMap({
             'user_id': userId,
             'nik': nik,
@@ -127,6 +156,31 @@ class CreditRepository extends ChangeNotifier {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       prefs.setString('message', errorMessage);
       return false;
+    }
+  }
+
+  Future<List<ContractModel>?> getContract(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      response = await dio.post(Api().getContract,
+          options: Options(headers: {"Accept": "application/json",}),
+          data: FormData.fromMap({
+            'user_id': prefs.getString('user_id'),
+          })).timeout(Duration (seconds: Api().timeout));
+      if (response!.data['isSuccess'] == true) {
+        notifyListeners();
+        Iterable data = response!.data['data'];
+        List<ContractModel> listData = data.map((map) => ContractModel.fromJson(map)).toList();
+        return listData;
+      } else {
+        prefs.setString('message', prefs.getString('message')!);
+        return null;
+      }
+    } on DioError catch (e) {
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      prefs.setString('message', errorMessage);
+      Toast.show(errorMessage, context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return null;
     }
   }
 }

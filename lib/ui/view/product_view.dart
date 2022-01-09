@@ -34,7 +34,7 @@ class _ProductViewState extends State<ProductView> {
         title: Text("Produk & Layanan", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -57,15 +57,22 @@ class _ProductViewState extends State<ProductView> {
                 child: CircularProgressIndicator()) : SingleChildScrollView(
                   child: Container(
                     padding: EdgeInsets.all(20),
-                    child: data.product!.isEmpty ? Center(child: Text("Data Tidak Ditemukan")) : ListView.builder(
+                    child: data.product!.isEmpty ? Container(
+                        padding: EdgeInsets.all(20),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30,),
+                            Image.asset("assets/images/empty.png", width: 300,),
+                            SizedBox(height: 30,),
+                            Text("Data Anda masih kosong", style: TextStyle(fontSize: 16),)
+                          ],
+                        )
+                    ) : ListView.builder(
                       itemCount: data.product!.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        Uint8List? image;
-                        if(data.product![index].product_thumbnail! !=null ) {
-                          image = Base64Codec().decode(data.product![index].product_thumbnail!);
-                        }
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -88,18 +95,39 @@ class _ProductViewState extends State<ProductView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: 80,
-                                  height: 50,
-                                  decoration: data.product![index].product_thumbnail! !=null ? BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: MemoryImage(image!),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ) : BoxDecoration(
+                                CachedNetworkImage(
+                                  imageUrl: data.product![index].product_thumbnail!,
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    width: 80,
+                                    height: 50,
+                                    decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey[300]
+                                      image: DecorationImage(
+                                          image: imageProvider, fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => new SkeletonAnimation(
+                                      child: Container(
+                                        width: 80,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                      )
+                                  ),
+                                  errorWidget: (context, url, error) => new Container(
+                                    width: 80,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                          Icons.error
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 20,),

@@ -38,7 +38,7 @@ class _NewsViewState extends State<NewsView> {
         title: Text("Berita & Kegiatan", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -99,7 +99,18 @@ class _NewsViewState extends State<NewsView> {
                         ),
                       ),
                       SizedBox(height: 30,),
-                      news!.isEmpty ? Center(child: Text("Data Tidak Ditemukan")) : ListView.builder(
+                      news!.isEmpty ? Container(
+                          padding: EdgeInsets.all(20),
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 30,),
+                              Image.asset("assets/images/empty.png", width: 300,),
+                              SizedBox(height: 30,),
+                              Text("Data Anda masih kosong", style: TextStyle(fontSize: 16),)
+                            ],
+                          )
+                      ) : ListView.builder(
                           shrinkWrap: true,
                           itemCount: news!.length,
                           physics: NeverScrollableScrollPhysics(),

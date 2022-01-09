@@ -37,88 +37,85 @@ class _NewsDetailViewState extends State<NewsDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        title: Text("Berita & Kegiatan", style: TextStyle(color: colorPrimary),),
+        centerTitle: true,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.white),
         elevation: 0.0,
+        brightness: Brightness.light,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: colorPrimary,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 300,
-              child: Stack(
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: widget.data!.news_images!,
-                    imageBuilder: (context, imageProvider) => Container(
-                      height: 300,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30)
-                        ),
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.cover),
-                      ),
-                    ),
-                    placeholder: (context, url) => new SkeletonAnimation(
-                        child: Container(
-                          height: 300,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(30),
-                                  bottomRight: Radius.circular(30)
-                              )
-                          ),
-                        )
-                    ),
-                    errorWidget: (context, url, error) => new Container(
-                      height: 300,
+        child:  Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CachedNetworkImage(
+                imageUrl: widget.data!.news_images!,
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => new SkeletonAnimation(
+                    child: Container(
+                      height: 200,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: Colors.grey[300],
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30)
-                          )
+                          borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Center(
-                        child: Icon(
-                            Icons.error
-                        ),
-                      ),
+                    )
+                ),
+                errorWidget: (context, url, error) => new Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: Icon(
+                        Icons.error
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("${widget.data!.news_title}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                  SizedBox(height: 10,),
-                  Text(widget.data!.created_date!, style: TextStyle(fontSize: 14,)),
-                  SizedBox(height: 20,),
-                  Html(
-                    data: """
-                      ${widget.data!.news_description}
-                      """,
-                  )
-                ],
+              SizedBox(height: 30,),
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: colorSecondary,
+                  borderRadius: BorderRadius.circular(5)
+                ),
+                child: Text(widget.data!.created_date!, style: TextStyle(fontSize: 14, color: Colors.white)),
               ),
-            )
-          ],
-        ),
+              SizedBox(height: 20,),
+              Text("${widget.data!.news_title}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              SizedBox(height: 20,),
+              Html(
+                data: """
+                  ${widget.data!.news_description}
+                  """,
+              )
+            ],
+          ),
+        )
       ),
     );
   }

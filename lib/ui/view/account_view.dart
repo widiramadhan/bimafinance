@@ -9,10 +9,12 @@ import 'package:bima_finance/ui/view/change_profile_view.dart';
 import 'package:bima_finance/ui/view/contract_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
 import 'package:bima_finance/ui/view/photo_viewer_view.dart';
+import 'package:bima_finance/ui/view/webview_view.dart';
 import 'package:bima_finance/ui/widget/dialog_question.dart';
 import 'package:bima_finance/ui/widget/dialog_success.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
 import 'package:bima_finance/ui/widget/menu.dart';
+import 'package:bima_finance/ui/widget/separator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +106,7 @@ class _AccountViewState extends State<AccountView> {
         title: Text("Akun", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
       ),
       body: FutureBuilder(
@@ -369,42 +371,6 @@ class _AccountViewState extends State<AccountView> {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               color: Color(0xfff5f6f8),
               child: Text(
-                "MANAJEMEN KONTRAK",
-                style: TextStyle(
-                    color: Colors.grey
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  MenuWidget(
-                    title: "Daftar Kontrak",
-                    icon: FontAwesomeIcons.fileContract,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ContractView(isBack: true),
-                        ),
-                      );
-                    },
-                  ),
-                  _separator(),
-                  MenuWidget(
-                    title: "Riwayat Pembayaran",
-                    icon: FontAwesomeIcons.history,
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              color: Color(0xfff5f6f8),
-              child: Text(
                 "PENGATURAN AKUN",
                 style: TextStyle(
                     color: Colors.grey
@@ -457,6 +423,63 @@ class _AccountViewState extends State<AccountView> {
                 ],
               ),
             ),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            color: Color(0xfff5f6f8),
+            child: Text(
+              "TENTANG APLIKASI",
+              style: TextStyle(
+                  color: Colors.grey
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                MenuWidget(
+                    title: "Bima Finance Mobile",
+                    icon: FontAwesomeIcons.mobileAlt,
+                    onTap: () {
+
+                    }
+                ),
+                SeparatorWidget(),
+                MenuWidget(
+                    title: "Kebijakan Privasi",
+                    icon: FontAwesomeIcons.lock,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WebviewView(
+                            title: "Kebijakan Privasi",
+                            url: "https://loremipsum.io/privacy-policy/",
+                          ),
+                        ),
+                      );
+                    }
+                ),
+                SeparatorWidget(),
+                MenuWidget(
+                    title: "Syarat & Ketentuan",
+                    icon: FontAwesomeIcons.fileInvoice,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WebviewView(
+                            title: "Syarat & Ketentuan",
+                            url: "https://generator.lorem-ipsum.info/terms-and-conditions",
+                          ),
+                        ),
+                      );
+                    }
+                ),
+              ],
+            ),
+          ),
             Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),

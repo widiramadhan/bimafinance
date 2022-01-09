@@ -10,8 +10,10 @@ import 'package:bima_finance/ui/view/branch_detail_view.dart';
 import 'package:bima_finance/ui/widget/main_button.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
 import 'package:bima_finance/ui/widget/textfield_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,7 +54,7 @@ class _BranchViewState extends State<BranchView> {
         title: Text("Kantor Cabang", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -112,15 +114,22 @@ class _BranchViewState extends State<BranchView> {
                       ),
                     ),
                     SizedBox(height: 30,),
-                    branch!.isEmpty ? Center(child: Text("Data Tidak Ditemukan")) : ListView.builder(
+                    branch!.isEmpty ? Container(
+                        padding: EdgeInsets.all(20),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30,),
+                            Image.asset("assets/images/empty.png", width: 300,),
+                            SizedBox(height: 30,),
+                            Text("Data Anda masih kosong", style: TextStyle(fontSize: 16),)
+                          ],
+                        )
+                    ) : ListView.builder(
                         shrinkWrap: true,
                         itemCount: branch!.length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          Uint8List? image;
-                          if(branch![index].branch_images !=null ) {
-                             image = Base64Codec().decode(branch![index].branch_images!);
-                          }
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -141,25 +150,50 @@ class _BranchViewState extends State<BranchView> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: 120,
-                                    decoration: branch![index].branch_images !=null ? BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          topLeft: Radius.circular(10)
+                                  CachedNetworkImage(
+                                    imageUrl: data.branch![index].branch_images!,
+                                    imageBuilder: (context, imageProvider) => Container(
+                                      height: 150,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(10),
+                                            topLeft: Radius.circular(10)
+                                        ),
+                                        image: DecorationImage(
+                                            image: imageProvider, fit: BoxFit.cover),
                                       ),
-                                      image: DecorationImage(
-                                        image: MemoryImage(image!),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ) : BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(10),
-                                        topLeft: Radius.circular(10),
                                     ),
-                                    color: Colors.grey
-                                  ),),
+                                    placeholder: (context, url) => new SkeletonAnimation(
+                                        child: Container(
+                                          height: 150,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(10),
+                                                  topLeft: Radius.circular(10)
+                                              )
+                                          ),
+                                        )
+                                    ),
+                                    errorWidget: (context, url, error) => new Container(
+                                      height: 150,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(10),
+                                              topLeft: Radius.circular(10)
+                                          )
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                            Icons.error
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   SizedBox(height: 10,),
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
