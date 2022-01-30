@@ -444,7 +444,7 @@ class _OCRViewState extends State<OCRView> {
                                               MaterialPageRoute(
                                                 builder: (context) => VerificationView(
                                                   nik: "${nik}",
-                                                  name: "${prefs.getString('name')}",
+                                                  name: "",
                                                   dob: "${dob}",
                                                   gender: "${gender}",
                                                   address: "",
