@@ -50,26 +50,27 @@ class _IndexViewState extends State<IndexView> {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
-          // DialogQuestion(
-          //     context: context,
-          //     path: "assets/images/img_failed.png",
-          //     content: "Apakah anda yakin ingin menutup \naplikasi yukmarket ?",
-          //     title: "Tutup Aplikasi",
-          //     appName: "",
-          //     imageHeight: 100,
-          //     imageWidth: 100,
-          //     dialogHeight: 260,
-          //     buttonConfig: ButtonConfig(
-          //       dialogDone: "Yakin",
-          //       dialogCancel: "Batal",
-          //       buttonDoneColor: Colors.orange,
-          //     ),
-          //     submit: () async {
-          //       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          //     });
+
           return (await showDialog(
             context: context,
-            builder: (context) => new AlertDialog(),
+            builder: (context) => new AlertDialog(
+              title: Text("Keluar"),
+              content: Text("Apakah anda yakin ingin keluar dari aplikasi?"),
+              actions: [
+                TextButton(
+                  child: Text("Batal"),
+                  onPressed:  () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text("Keluar"),
+                  onPressed:  () {
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
+                ),
+              ],
+            ),
           )) ?? false;
         },
         child: Center(

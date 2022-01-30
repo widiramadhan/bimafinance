@@ -181,6 +181,14 @@ class AuthViewModel extends BaseViewModel {
       return false;
     }
 
+    if(!RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(strEmail)){
+      Toast.show('Harap masukkan email yang valid', context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
+      return false;
+    }
+
+
+
     var success = await authRepository.forgotPassword(strEmail, context);
     setState(ViewState.Idle);
     if(success){

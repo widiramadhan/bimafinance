@@ -7,6 +7,7 @@ import 'package:bima_finance/core/viewmodel/credit_viewmodel.dart';
 import 'package:bima_finance/ui/view/auth_view.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/ocr_guide_view.dart';
+import 'package:bima_finance/ui/widget/detail.dart';
 import 'package:bima_finance/ui/widget/main_button.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
 import 'package:bima_finance/ui/widget/separator.dart';
@@ -26,6 +27,7 @@ class CreditSimulationDetailView extends StatefulWidget {
 
 class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView> {
   final formatter = new NumberFormat("#,###");
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,7 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
         title: Text("Simulasi Kredit", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -57,24 +59,42 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _header("Tipe Pembiayaan", "${widget.data!.product_name}", context),
-                        SizedBox(width: 10,),
-                        widget.data!.product_id != 3 ? _header("Harga Kendaraan", "Rp. ${widget.data!.price}", context) : _header("Jumlah Pinjaman", "Rp. ${widget.data!.loan_amount}", context),
-                      ],
+                    DetailWidget(
+                        title: "Tipe Pembiayaan",
+                        subtitle: "${widget.data!.product_name}"
                     ),
-                    SizedBox(height: 16,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _header("Jangka Waktu", "${widget.data!.tenor} Bulan", context),
-                        SizedBox(width: 10,),
-                        _header("Uang Muka", "Rp. ${widget.data!.product_id != 3 ? widget.data!.dp : 0}", context),
-                      ],
+                    SeparatorWidget(),
+                    DetailWidget(
+                        title: widget.data!.product_id != 3
+                            ? "Harga Kendaraan"
+                            : "Jumlah Pinjaman",
+                        subtitle: widget.data!.product_id != 3
+                            ? "Rp. ${formatter.format(
+                            widget.data!.price)} "
+                            : "Rp. ${formatter.format(
+                            widget.data!.loan_amount)}"
+                    ),
+                    SeparatorWidget(),
+                    DetailWidget(
+                        title: "Jangka Waktu",
+                        subtitle: "${widget.data!.tenor}"
+                    ),
+                    SeparatorWidget(),
+                    DetailWidget(
+                        title: "Uang Muka",
+                        subtitle: "Rp. ${formatter.format(
+                            widget.data!.dp)}"
+                    ),
+                    SeparatorWidget(),
+                    DetailWidget(
+                        title: "Cicilan Perbulan",
+                        subtitle: "Rp. ${formatter.format(
+                            widget.data!.instalment)}"
+                    ),
+                    SeparatorWidget(),
+                    DetailWidget(
+                        title: "Skema Pembayaran",
+                        subtitle: ""
                     ),
                     SizedBox(height: 20,),
                     Container(
@@ -100,6 +120,7 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                                 SizedBox(width: 10,),
@@ -111,6 +132,7 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 )
                               ],
@@ -132,14 +154,22 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
                                         Container(
                                           width: 100,
                                           child: Text(
-                                              "${widget.data!.data_instalment![index].month}"
+                                            "${widget.data!.data_instalment![index].month}",
+                                            style: TextStyle(
+                                              fontSize: 14
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         ),
                                         SizedBox(width: 10,),
                                         Expanded(
                                           flex: 1,
                                           child: Text(
-                                              "Rp. ${widget.data!.data_instalment![index].instalment}"
+                                            "Rp. ${formatter.format(widget.data!.data_instalment![index].instalment)}",
+                                            style: TextStyle(
+                                              fontSize: 14
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         )
                                       ],

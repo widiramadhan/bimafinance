@@ -196,7 +196,7 @@ class _HelpViewState extends State<HelpView> {
                             MaterialPageRoute(
                               builder: (context) => WebviewView(
                                 title: "Formulir Pengaduan Konsumen",
-                                url: "http://www.bimafinance.co.id/wp-content/uploads/Formulir-Pengaduan-Konsumen.pdf",
+                                url: "https://docs.google.com/viewer?url=http://www.bimafinance.co.id/wp-content/uploads/Formulir-Pengaduan-Konsumen.pdf",
                               ),
                             ),
                           );

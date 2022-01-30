@@ -1,5 +1,6 @@
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/constant/web_url.dart';
+import 'package:bima_finance/ui/view/about_apps_view.dart';
 import 'package:bima_finance/ui/view/webview_view.dart';
 import 'package:bima_finance/ui/widget/menu.dart';
 import 'package:bima_finance/ui/widget/separator.dart';
@@ -229,7 +230,12 @@ class _AboutViewState extends State<AboutView> {
                         title: "Bima Finance Mobile",
                         icon: FontAwesomeIcons.mobileAlt,
                         onTap: () {
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AboutAppsView()
+                            ),
+                          );
                         }
                     ),
                     SeparatorWidget(),
@@ -242,7 +248,7 @@ class _AboutViewState extends State<AboutView> {
                             MaterialPageRoute(
                               builder: (context) => WebviewView(
                                 title: "Kebijakan Privasi",
-                                url: "https://loremipsum.io/privacy-policy/",
+                                url: WebURL().privacyPolicy,
                               ),
                             ),
                           );
@@ -258,7 +264,7 @@ class _AboutViewState extends State<AboutView> {
                             MaterialPageRoute(
                               builder: (context) => WebviewView(
                                 title: "Syarat & Ketentuan",
-                                url: "https://generator.lorem-ipsum.info/terms-and-conditions",
+                                url: WebURL().termsCondition,
                               ),
                             ),
                           );

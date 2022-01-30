@@ -12,4 +12,7 @@ class WebURL {
   String laporanKeberlanjutan = base_url + "laporan-keberlanjutan";
   String layananPengaduan = base_url + "hubungi-kami/layanan-pengaduan";
   String pengkinianDataDebitur = base_url + "pengkinian-data-debitur-2";
+
+  String privacyPolicy = "http://101.255.66.82/rest_api/index.php/privacy-policy/";
+  String termsCondition = "http://101.255.66.82/rest_api/index.php/terms-condition/";
 }

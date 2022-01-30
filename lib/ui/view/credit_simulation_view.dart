@@ -22,8 +22,8 @@ class CreditSimulationView extends StatefulWidget {
 }
 
 class _CreditSimulationViewState extends State<CreditSimulationView> {
-  final price = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', initialValue: 0);
-  final dp = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', initialValue: 0);
+  final price = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', initialValue: 0, precision: 0);
+  final dp = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', initialValue: 0, precision: 0);
   String? tenor = "0";
   String? amount = "0";
   int? productId;

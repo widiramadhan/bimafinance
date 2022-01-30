@@ -63,8 +63,12 @@ class CreditViewModel extends BaseViewModel {
       BuildContext context) async {
     setState(ViewState.Busy);
     int amount = int.parse(loanAmount.replaceAll("Rp. ", "").replaceAll(".", ""));
-    int prices = int.parse(price.substring(0, price.length - 3).replaceAll(".", "").replaceAll(",", ""));
-    int downPayment = int.parse(dp.substring(0, dp.length - 3).replaceAll(".", "").replaceAll(",", ""));
+    int prices = int.parse(price.replaceAll(".", "").replaceAll(",", ""));
+    int downPayment = int.parse(dp.replaceAll(".", "").replaceAll(",", ""));
+
+    print(amount);
+    print(prices);
+    print(downPayment);
     credit = await creditRepository.simulationCredit(
         productId,
         amount,

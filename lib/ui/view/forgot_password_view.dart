@@ -15,6 +15,13 @@ class ForgotPasswordView extends StatefulWidget {
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final _txtEmailController = TextEditingController();
 
+  void hideKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseView<AuthViewModel>(
@@ -80,6 +87,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                           colors: <Color>[colorPrimary, colorPrimary],
                                         ),
                                         onPressed: () async {
+                                          hideKeyboard(context);
                                           var forgot = await data.forgotPassword(_txtEmailController.text, context);
                                           if(forgot){
                                             Navigator.push(

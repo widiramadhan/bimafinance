@@ -2,6 +2,7 @@
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/locator.dart';
 import 'package:bima_finance/ui/view/splash_screen_view.dart';
+import 'package:bima_finance/ui/view/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

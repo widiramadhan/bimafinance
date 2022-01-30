@@ -11,4 +11,10 @@
         <certificates src="system" />
     </trust-anchors>
 </domain-config>
+<domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">101.255.66.82</domain>
+    <trust-anchors>
+        <certificates src="system" />
+    </trust-anchors>
+</domain-config>
 </network-security-config>

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:badges/badges.dart';
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/core/constant/web_url.dart';
 import 'package:bima_finance/core/viewmodel/account_viewmodel.dart';
+import 'package:bima_finance/ui/view/about_apps_view.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/change_password_view.dart';
 import 'package:bima_finance/ui/view/change_profile_view.dart';
@@ -442,7 +444,12 @@ class _AccountViewState extends State<AccountView> {
                     title: "Bima Finance Mobile",
                     icon: FontAwesomeIcons.mobileAlt,
                     onTap: () {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AboutAppsView()
+                        ),
+                      );
                     }
                 ),
                 SeparatorWidget(),
@@ -455,7 +462,7 @@ class _AccountViewState extends State<AccountView> {
                         MaterialPageRoute(
                           builder: (context) => WebviewView(
                             title: "Kebijakan Privasi",
-                            url: "https://loremipsum.io/privacy-policy/",
+                            url: WebURL().privacyPolicy,
                           ),
                         ),
                       );
@@ -471,7 +478,7 @@ class _AccountViewState extends State<AccountView> {
                         MaterialPageRoute(
                           builder: (context) => WebviewView(
                             title: "Syarat & Ketentuan",
-                            url: "https://generator.lorem-ipsum.info/terms-and-conditions",
+                            url: WebURL().termsCondition,
                           ),
                         ),
                       );

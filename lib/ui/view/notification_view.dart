@@ -6,6 +6,7 @@ import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/viewmodel/home_viewmodel.dart';
 import 'package:bima_finance/core/viewmodel/payment_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
+import 'package:bima_finance/ui/view/notification_detail_view.dart';
 import 'package:bima_finance/ui/view/payment_detail_view.dart';
 import 'package:bima_finance/ui/widget/main_button.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
@@ -80,11 +81,21 @@ class _NotificationViewState extends State<NotificationView> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: data.notification![index].notification_read == 0 ? null : () async {
-                                  var update = await data.updateStatusNotification(data.notification![index].notification_id!, context);
-                                  if(update == true){
-                                    await data.getNotification(context);
+                                onTap: /*data.notification![index].notification_read == 0 ? null :*/ () async {
+                                  if(data.notification![index].notification_read == 1) {
+                                    var update = await data
+                                        .updateStatusNotification(
+                                        data.notification![index]
+                                            .notification_id!, context);
+                                    if (update == true) {
+                                      await data.getNotification(context);
+                                    }
                                   }
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NotificationDetailView(data: data.notification![index])),//OtpView(email: _txtEmailController.text, type: OtpType.ForgotPassword,)),
+                                  );
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(20),
