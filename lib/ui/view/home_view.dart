@@ -61,7 +61,22 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     scrollController = ScrollController();
+    scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  Color appBarColors = Colors.transparent;
+
+  _scrollListener() {
+    if (scrollController.offset >= 100) {
+      setState(() {
+        appBarColors = colorPrimary;
+      });
+    } else {
+      setState(() {
+        appBarColors = Colors.transparent;
+      });
+    }
   }
 
   @override
@@ -70,12 +85,12 @@ class _HomeViewState extends State<HomeView> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(0.0),
         child: AppBar(
-          elevation: 0,
+          elevation: 2,
           brightness: Brightness.dark,
-          backgroundColor: Color(0xff07318b),
+          backgroundColor: appBarColors,
         ),
       ),
-      //extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: true,
       body: FutureBuilder(
         future: checkSessionLogin(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -86,12 +101,13 @@ class _HomeViewState extends State<HomeView> {
                     },
                     builder: (context, data, child) {
                       return ModalProgress(
-                      inAsyncCall: data.state == ViewState.Busy ? true : false,
+                      inAsyncCall: false,//data.state == ViewState.Busy ? true : false,
                       child: RefreshIndicator(
                         onRefresh: () async {
                           data.init(context);
                         },
                         child: SingleChildScrollView(
+                          controller: scrollController,
                           child: Container(
                             color: Colors.white,
                             child: Column(
@@ -102,8 +118,8 @@ class _HomeViewState extends State<HomeView> {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      height: 150,
-                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 40),
+                                      height: 200,
+                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 30),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                             bottomRight: Radius.circular(30),
@@ -116,7 +132,8 @@ class _HomeViewState extends State<HomeView> {
                                             fit: BoxFit.cover
                                         ),
                                       ),
-                                      child: Column(
+                                      child: SafeArea(
+                                        child: Column(
                                         children: [
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
@@ -235,7 +252,7 @@ class _HomeViewState extends State<HomeView> {
                                             ],
                                           )
                                         ],
-                                      ),
+                                      ),)
                                     ),
 
                                     // Container(
@@ -593,7 +610,7 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       SizedBox(height: 30,),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Expanded(

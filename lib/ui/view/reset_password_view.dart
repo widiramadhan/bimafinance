@@ -31,7 +31,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
         builder: (context, data, child) => Scaffold(
               appBar: AppBar(
                 backgroundColor: colorPrimary,
-                elevation: 0,
+                elevation: 2,
                 brightness: Brightness.dark,
               ),
               body: ModalProgress(

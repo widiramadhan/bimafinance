@@ -43,7 +43,7 @@ class _PromoDetailViewState extends State<PromoDetailView> {
         centerTitle: true,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.white),
-        elevation: 0.0,
+        elevation: 2.0,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

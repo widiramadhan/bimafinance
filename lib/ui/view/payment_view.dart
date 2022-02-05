@@ -38,7 +38,7 @@ class _PaymentViewState extends State<PaymentView> {
         title: Text("Pembayaran", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
@@ -109,9 +109,8 @@ class _PaymentViewState extends State<PaymentView> {
                                           height: 50,
                                           width: 50,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
                                             image: DecorationImage(
-                                                image: imageProvider, fit: BoxFit.cover),
+                                                image: imageProvider, fit: BoxFit.contain),
                                           ),
                                         ),
                                         placeholder: (context, url) => new SkeletonAnimation(

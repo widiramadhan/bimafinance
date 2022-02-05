@@ -46,7 +46,7 @@ class _ContractViewState extends State<ContractView> with SingleTickerProviderSt
         title: Text("Kontrak", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: widget.isBack == true ? GestureDetector(
           onTap: () {

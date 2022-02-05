@@ -68,8 +68,8 @@ class _SplashScreenViewState extends State<SplashScreenView>
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/bg_splash.jpeg'),
-                  fit: BoxFit.cover
+                  image: AssetImage('assets/images/bg_splash.png'),
+                  fit: BoxFit.fill
                 )
               ),
             ),

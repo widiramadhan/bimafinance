@@ -31,7 +31,7 @@ class _WebviewViewState extends State<WebviewView> {
           title: Text("${widget.title}", style: TextStyle(color: colorPrimary),),
           centerTitle: true,
           backgroundColor: Colors.white,
-          elevation: 0,
+          elevation: 2,
           brightness: Brightness.light,
           leading: IconButton(
               icon: new Icon(Icons.arrow_back, color: Colors.black,),

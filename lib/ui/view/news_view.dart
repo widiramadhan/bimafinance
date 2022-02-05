@@ -38,7 +38,7 @@ class _NewsViewState extends State<NewsView> {
         title: Text("Berita & Kegiatan", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

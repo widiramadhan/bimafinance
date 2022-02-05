@@ -67,7 +67,7 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
         onModelReady: (data) {},
         builder: (context, data, child) => Scaffold(
               appBar: AppBar(
-                elevation: 0,
+                elevation: 2,
               ),
               body: ModalProgress(
                 inAsyncCall: data.state == ViewState.Busy ? true : false,

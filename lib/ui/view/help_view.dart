@@ -84,7 +84,7 @@ class _HelpViewState extends State<HelpView> {
         title: Text("Bantuan", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
       ),
       body: SingleChildScrollView(

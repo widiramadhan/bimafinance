@@ -13,7 +13,7 @@ class PhotoViewerView extends StatelessWidget {
         appBar: AppBar(
             title: Text("", style: TextStyle(color: Colors.green),),
             backgroundColor: Colors.black,
-            elevation: 0,
+            elevation: 2,
             automaticallyImplyLeading: false,
             centerTitle: true,
             brightness: Brightness.light,

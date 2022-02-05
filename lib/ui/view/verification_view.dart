@@ -81,7 +81,7 @@ class _VerificationViewState extends State<VerificationView> {
         title: Text("Verifikasi Data", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

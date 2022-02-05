@@ -37,7 +37,7 @@ class _PromoViewState extends State<PromoView> {
         title: Text("Promo Menarik", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

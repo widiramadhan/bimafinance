@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/ui/view/about_view.dart';
 import 'package:bima_finance/ui/view/account_view.dart';
@@ -66,7 +68,12 @@ class _IndexViewState extends State<IndexView> {
                 TextButton(
                   child: Text("Keluar"),
                   onPressed:  () {
-                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                    //SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                    if (Platform.isAndroid) {
+                      SystemNavigator.pop();
+                    } else if (Platform.isIOS) {
+                      exit(0);
+                    }
                   },
                 ),
               ],

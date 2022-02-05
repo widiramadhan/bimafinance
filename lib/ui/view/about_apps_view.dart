@@ -40,7 +40,7 @@ class _AboutAppsViewState extends State<AboutAppsView> {
         title: Text("Bima Finance Mobile", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

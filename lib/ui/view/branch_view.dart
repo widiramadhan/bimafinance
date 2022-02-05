@@ -54,7 +54,7 @@ class _BranchViewState extends State<BranchView> {
         title: Text("Kantor Cabang", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

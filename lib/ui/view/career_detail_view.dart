@@ -39,7 +39,7 @@ class _CareerDetailViewState extends State<CareerDetailView> {
         title: Text("${widget.data!.career_title}", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {

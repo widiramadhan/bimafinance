@@ -46,7 +46,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.white),
-        elevation: 0.0,
+        elevation: 2.0,
       ),
       body: SingleChildScrollView(
         child: Column(

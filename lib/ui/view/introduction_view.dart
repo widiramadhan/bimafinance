@@ -15,7 +15,7 @@ class _IntroductionViewState extends State<IntroductionView> {
 
   void _onIntroEnd(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.setBool('intro', true);
+    prefs.setBool('intro', true);
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => IndexView()),
     );

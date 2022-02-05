@@ -245,7 +245,7 @@ class _OCRViewState extends State<OCRView> {
         title: Text("Pindai E-KTP", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
         leading: GestureDetector(
           onTap: () {
