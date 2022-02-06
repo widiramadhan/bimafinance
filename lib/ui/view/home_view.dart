@@ -118,8 +118,8 @@ class _HomeViewState extends State<HomeView> {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      height: 200,
-                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 30),
+                                      //height: 200,
+                                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 30),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                             bottomRight: Radius.circular(30),
@@ -649,7 +649,7 @@ class _HomeViewState extends State<HomeView> {
                                           )
                                         ],
                                       ),
-                                      SizedBox(height: 20,),
+                                      SizedBox(height: 0,),
                                       data.news == null ? Center(child: CircularProgressIndicator()) :
                                       data.news!.isEmpty ? Center(child: Text("Data Tidak Ditemukan")) : ListView.builder(
                                           shrinkWrap: true,
