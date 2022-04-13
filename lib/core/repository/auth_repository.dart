@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:bima_finance/core/constant/api.dart';
+import 'package:bima_finance/core/constant/otp_type.dart';
 import 'package:bima_finance/core/helper/dio_exception.dart';
+import 'package:bima_finance/ui/view/otp_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class AuthRepository extends ChangeNotifier {
   Response? response;
@@ -22,22 +25,24 @@ class AuthRepository extends ChangeNotifier {
             'password': strPassword
           })).timeout(Duration (seconds: Api().timeout));
       if (response?.data['isSuccess'] == true) {
-        //if(response?.data['data']['is_active'] == 1) {
+        if(response?.data['data']['is_active'] == 1) {
           prefs.setBool('is_login', true);
           prefs.setString('user_id', response!.data['data']['user_id'].toString());
           prefs.setString('name', response?.data['data']['fullname']);
           prefs.setString('phone', response?.data['data']['phone']);
           prefs.setString('email', response?.data['data']['email']);
-          // prefs.setString('user_nik', response?.data['data']['user_nik']);
+          prefs.setString('user_nik', response?.data['data']['nik'] ?? '');
           prefs.setString('token', response?.data['data']['token']);
           prefs.setString('message', response?.data['message']);
           return true;
-        // }else{
-        //   Toast.show(response?.data['message'], context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-        //   Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => OtpView(email: strEmail, type: OtpType.Register,)),
-        //   );
-        // }
+        }else{
+          prefs.setString('message', response?.data['message']);
+          Toast.show(response?.data['message'], context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          Navigator.push(
+            context, MaterialPageRoute(builder: (context) => OtpView(email: strEmail, type: OtpType.Register,)),
+          );
+          return false;
+        }
         
       } else {
         prefs.setString('message', response?.data['message']);

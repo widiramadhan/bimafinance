@@ -89,6 +89,8 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  final formatter = new NumberFormat("#,###");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,6 +112,9 @@ class _HomeViewState extends State<HomeView> {
                       // await data.getOstanding(context);
                       await data.getUser(context);
                       data.init(context);
+                      if(isLogin == true)  {
+                        await data.getOstanding(context);
+                      }
                     },
                     builder: (context, data, child) {
                       return ModalProgress(
@@ -318,15 +323,26 @@ class _HomeViewState extends State<HomeView> {
                                                   ],
                                                 ),
                                                 SizedBox(height: 10,),
-                                                Text(
-                                                      isLogin == false ? "-" : "${data.user?.phone == null ? "Dear" : data.user?.phone}",
-                                                      
+                                                // data.ostanding == null ? Text("Harap Menunggu...", style: TextStyle(
+                                                //     color: Colors.black54,
+                                                //     fontWeight: FontWeight.bold,
+                                                //     fontSize: 16) ) :
+                                                if(isLogin == false) ...[
+                                                  Text("-")
+                                                ] else ... [
+                                                  if(data.ostanding == null) ...[
+                                                    Text("Harap Menunggu...")
+                                                  ] else ... [
+                                                    Text(
+                                                      "Rp. ${formatter.format(data.ostanding?.first.total)}",
                                                       style: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 16
-                                                  ),
-                                                )
+                                                          color: Colors.black54,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 16
+                                                      ),
+                                                    )
+                                                  ]
+                                                ]
                                               ],
                                             ),
                                           ),

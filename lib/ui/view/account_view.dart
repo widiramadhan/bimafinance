@@ -138,9 +138,7 @@ class _AccountViewState extends State<AccountView> {
           } else {
             return Container(
               child: Center(
-                child: Text(
-                  "Error"
-                ),
+                child: CircularProgressIndicator(),
               ),
             );
           }

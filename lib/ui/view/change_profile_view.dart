@@ -33,7 +33,7 @@ class _ChangeProfileViewState extends State<ChangeProfileView> {
     _nameController.text = widget.user!.fullname!;
     _phoneNumberController.text = widget.user!.phone!;
     _emailController.text = widget.user!.email!;
-    // _nikController.text = widget.user!.user_nik!;
+    _nikController.text = widget.user!.user_nik!;
     super.initState();
   }
 

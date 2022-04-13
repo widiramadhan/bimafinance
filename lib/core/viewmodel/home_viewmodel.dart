@@ -31,7 +31,7 @@ class HomeViewModel extends BaseViewModel {
   List<PromoModel>? promo;
   List<NewsModel>? news;
   List<NotificationModel>? notification;
-  // OstandingModel? ostanding;
+  List<OstandingModel>? ostanding;
 
   bool isLogin = false;
 
@@ -39,7 +39,6 @@ class HomeViewModel extends BaseViewModel {
     await getNews(context);
     await getPromo(context);
     await getNotification(context);
-    // await getOstanding(context);
     
     await checkSessionLogin();
     if(isLogin == true){
@@ -81,6 +80,22 @@ class HomeViewModel extends BaseViewModel {
   Future getNotification(BuildContext context) async {
     setState(ViewState.Busy);
     notification = await notificationRepository.getNotification(context);
+    notifyListeners();
+    setState(ViewState.Idle);
+  }
+
+  Future getOstanding(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String nik = prefs.getString("user_nik") ?? "";
+    setState(ViewState.Busy);
+    if(nik == "") {
+      ostanding = OstandingModel(
+        nikKtp: "",
+        total: 0
+      ) as List<OstandingModel>?;
+    } else {
+      ostanding = await ostandingRepository.getOstanding(nik, context);
+    }
     notifyListeners();
     setState(ViewState.Idle);
   }

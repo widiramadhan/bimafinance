@@ -174,32 +174,32 @@ class _RegisterViewState extends State<RegisterView> {
                                       _txtConfirmPasswordController.text, 
                                       context);
                                       if(register) {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (context) =>
-                                        //           OtpView(email: _txtEmailController.text, type: OtpType.Register,)),
-                                        // );
-                                        SuccessDialog(
-                                          context: context,
-                                          title: "Sukses",
-                                          content: "Selamat akun anda berhasil dibuat",
-                                          imageHeight: 100,
-                                          imageWidth: 100,
-                                          dialogHeight: 280,
-                                          path: ''
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OtpView(email: _txtEmailController.text, type: OtpType.Register,)),
                                         );
-                                        Future.delayed(
-                                            new Duration(seconds: 12), () {
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginView()),
-                                          );
-                                        });
+                                        // SuccessDialog(
+                                        //   context: context,
+                                        //   title: "Sukses",
+                                        //   content: "Selamat akun anda berhasil dibuat",
+                                        //   imageHeight: 100,
+                                        //   imageWidth: 100,
+                                        //   dialogHeight: 280,
+                                        //   path: ''
+                                        // );
+                                        // Future.delayed(
+                                        //     new Duration(seconds: 12), () {
+                                        //   Navigator.pop(context);
+                                        //   Navigator.pop(context);
+                                        //   Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             LoginView()),
+                                        //   );
+                                        // });
                                       }
                                     },
                                     child: Text(

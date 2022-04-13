@@ -1,20 +1,18 @@
-// class OstandingModel {
-//   String? nik ;
-//   String? total;
+class OstandingModel {
+  String? nikKtp;
+  int? total;
 
+  OstandingModel({this.nikKtp, this.total});
 
-//   OstandingModel({this.nik, this.total});
+  OstandingModel.fromJson(Map<String, dynamic> json) {
+    nikKtp = json['nik_ktp'];
+    total = json['total'];
+  }
 
-//   OstandingModel.fromJson(Map<String, dynamic> json) {
-//     nik = json['nik_ktp'] ?? null;
-//     total = json['total'] ?? "";
-    
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['nik_ktp'] = this.nik;
-//     data['total'] = this.total;
-//     return data;
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['nik_ktp'] = this.nikKtp;
+    data['total'] = this.total;
+    return data;
+  }
+}

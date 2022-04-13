@@ -16,8 +16,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
 
 class OtpView extends StatefulWidget {
-  String email;
-  OtpType type;
+  String? email;
+  OtpType? type;
 
   OtpView({Key? key, required this.email, required this.type});
 
@@ -28,7 +28,7 @@ class OtpView extends StatefulWidget {
 bool btnEnabled = false;
 
 class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
-  String? otp;
+  String? otp = "";
 
   int? _counter = 0;
   AnimationController? _controller;
@@ -66,9 +66,11 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
     return BaseView<AuthViewModel>(
         onModelReady: (data) {},
         builder: (context, data, child) => Scaffold(
-              appBar: AppBar(
-                elevation: 2,
-              ),
+            appBar: AppBar(
+              backgroundColor: colorPrimary,
+              elevation: 0,
+              brightness: Brightness.dark,
+            ),
               body: ModalProgress(
                 inAsyncCall: data.state == ViewState.Busy ? true : false,
                 child: SafeArea(
@@ -138,7 +140,7 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
                                   GestureDetector(
                                     onTap: () async {
                                       if(btnEnabled == true){
-                                        var requestAgain = await data.resendOTP(widget.email, context);
+                                        var requestAgain = await data.resendOTP(widget.email!, context);
                                         if(requestAgain == true){
                                           _controller!.reset();
                                           setState(() {
@@ -180,7 +182,7 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
                                        colors: <Color>[colorPrimary, colorPrimary],
                                      ),
                                       onPressed: () async {
-                                        var verify = await data.verifyOTP(widget.email, otp!, context);
+                                        var verify = await data.verifyOTP(widget.email!, otp!, context);
                                         if(verify){
                                           if(widget.type == OtpType.ForgotPassword) {
                                             Navigator.push(
@@ -191,7 +193,7 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
                                                           email: widget.email)),
                                             );
                                           }else if(widget.type == OtpType.Register){
-                                            var activate = await data.activatedAccount(widget.email, otp!, context);
+                                            var activate = await data.activatedAccount(widget.email!, otp!, context);
                                             if(activate) {
                                               SuccessDialog(
                                                 context: context,
@@ -205,13 +207,12 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
                                                   new Duration(seconds: 1), () {
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
-                                                Navigator.pop(context);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          LoginView()),
-                                                );
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //       builder: (context) =>
+                                                //           LoginView()),
+                                                // );
                                               });
                                             }
                                           }else if(widget.type == OtpType.changePassword){
@@ -239,7 +240,7 @@ class _OtpViewState extends State<OtpView> with TickerProviderStateMixin {
                               height: 80,
                               child: CircleAvatar(
                                 backgroundColor: Colors.white,
-                                child: Image.asset("assets/images/logo.png"),
+                                child: Image.asset("assets/images/logo_circle.png"),
                               ),
                             ),
                           ),

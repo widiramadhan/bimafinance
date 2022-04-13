@@ -32,6 +32,7 @@ class AccountRepository extends ChangeNotifier {
   Future<UserModel?> getUser(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? ('fcm');
+    print(Api().getUser);
     try {
       response = await dio.post(Api().getUser,
         options: Options(headers: {

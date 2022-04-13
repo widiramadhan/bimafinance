@@ -52,7 +52,7 @@ class AuthViewModel extends BaseViewModel {
 
     setState(ViewState.Busy);
     var success = await authRepository.checkLogin(strEmail, strPassword, context);
-      if(!success){
+    if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       setState(ViewState.Idle);
       return false;
