@@ -5,11 +5,13 @@ import 'dart:typed_data';
 import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/model/news_model.dart';
 import 'package:bima_finance/core/model/notification_model.dart';
+import 'package:bima_finance/core/model/ostanding_model.dart';
 import 'package:bima_finance/core/model/promo_model.dart';
 import 'package:bima_finance/core/model/user_model.dart';
 import 'package:bima_finance/core/repository/account_repository.dart';
 import 'package:bima_finance/core/repository/news_repository.dart';
 import 'package:bima_finance/core/repository/notification_repository.dart';
+import 'package:bima_finance/core/repository/ostanding_repository.dart';
 import 'package:bima_finance/core/repository/promo_repository.dart';
 import 'package:bima_finance/core/viewmodel/base_viemodel.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,11 +25,13 @@ class HomeViewModel extends BaseViewModel {
   PromoRepository promoRepository = locator<PromoRepository>();
   NewsRepository newsRepository = locator<NewsRepository>();
   NotificationRepository notificationRepository = locator<NotificationRepository>();
+  OstandingRepository ostandingRepository = locator<OstandingRepository>();
 
   UserModel? user;
   List<PromoModel>? promo;
   List<NewsModel>? news;
   List<NotificationModel>? notification;
+  // OstandingModel? ostanding;
 
   bool isLogin = false;
 
@@ -35,9 +39,12 @@ class HomeViewModel extends BaseViewModel {
     await getNews(context);
     await getPromo(context);
     await getNotification(context);
+    // await getOstanding(context);
+    
     await checkSessionLogin();
     if(isLogin == true){
       await getUser(context);
+      // await getOstanding(context);
     }
   }
 
@@ -77,6 +84,19 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
     setState(ViewState.Idle);
   }
+
+  // Future<bool>? getOstanding(String? nik, String total, BuildContext context) async {
+  //  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //  setState(ViewState.Busy);
+  //  var success = await ostandingRepository.getOstanding(prefs.getString('user_id'), nik, total, context);
+  //  setState(ViewState.Idle);
+  //  if(success){
+  //    return true;
+  //  }else{
+  //    Toast.show(prefs.getString('message'),context,duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+  //    return false;
+  //  }
+  // }
 
   Future<bool> updateStatusNotification(int notificationId, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

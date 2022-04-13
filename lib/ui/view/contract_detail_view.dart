@@ -228,6 +228,11 @@ class _ContractDetailViewState extends State<ContractDetailView> {
                                   widget.data!.instalment)}"
                           ),
                           SeparatorWidget(),
+                          DetailWidget(
+                              title: "Cabang Pengajuan",
+                              subtitle: "${widget.data!.branchName}"
+                          ),
+                          SeparatorWidget(),
                         ],
                       ),
                     ),

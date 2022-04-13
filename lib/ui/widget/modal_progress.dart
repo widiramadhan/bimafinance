@@ -33,39 +33,39 @@ class ModalProgress extends StatelessWidget {
           child: Container(
             height: 150,
             width: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              image: DecorationImage(
-                  image: AssetImage("assets/images/loading.gif"), fit: BoxFit.cover
-              ),
-              color: Colors.white
-            ),
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.all(Radius.circular(20)),
+            //   image: DecorationImage(
+            //       image: AssetImage("assets/images/loading.gif"), fit: BoxFit.cover
+            //   ),
+            //   color: Colors.white
+            // ),
           ),);
-      else {
-        layOutProgressIndicator = Positioned(
-          child: Container(
-            height: 150,
-            width: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              image: DecorationImage(
-                  image: AssetImage("assets/images/loading.gif"), fit: BoxFit.cover
-              ),
-              color: Colors.white
-            ),
-          ),
-          left: offset!.dx,
-          top: offset!.dy,
-        );
-      }
-      final modal = [
-        new Opacity(
-          child: new ModalBarrier(dismissible: dismissible!, color: color),
-          opacity: opacity!,
-        ),
-        layOutProgressIndicator
-      ];
-      widgetList += modal;
+    //   else {
+    //     layOutProgressIndicator = Positioned(
+    //       child: Container(
+    //         height: 150,
+    //         width: 150,
+    //         decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.all(Radius.circular(20)),
+    //           image: DecorationImage(
+    //               image: AssetImage("assets/images/loading.gif"), fit: BoxFit.cover
+    //           ),
+    //           color: Colors.white
+    //         ),
+    //       ),
+    //       left: offset!.dx,
+    //       top: offset!.dy,
+    //     );
+    //   }
+    //   final modal = [
+    //     new Opacity(
+    //       child: new ModalBarrier(dismissible: dismissible!, color: color),
+    //       opacity: opacity!,
+    //     ),
+    //     layOutProgressIndicator
+    //   ];
+    //   widgetList += modal;
     }
     return new Stack(
       children: widgetList,

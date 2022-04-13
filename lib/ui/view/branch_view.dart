@@ -30,7 +30,7 @@ class _BranchViewState extends State<BranchView> {
     String googleUrl = 'comgooglemaps://?center=${latitude},${longitude}';
     String appleUrl = 'https://maps.apple.com/?sll=${latitude},${longitude}';
 
-    if (await canLaunch("comgooglemaps://")) {
+    if (await canLaunch(googleUrl)) {
       print('launching com googleUrl');
       await launch(googleUrl);
     } else if (await canLaunch(appleUrl)) {
@@ -91,12 +91,16 @@ class _BranchViewState extends State<BranchView> {
                         setState(() {
                           _text = value;
                           branch = data.branch!.where((element) => element.branch_name!.toUpperCase().contains(_text.toUpperCase())).toList();
+                          branch = data.branch!.where((element) => element.branch_address!.toUpperCase().contains(_text.toUpperCase())).toList();
+                          branch = data.branch!.where((element) => element.branch_description!.toUpperCase().contains(_text.toUpperCase())).toList();
                         });
                       },
                       suffixIcon: GestureDetector(
                         onTap: () async {
                           setState(() {
                             branch = data.branch!.where((element) => element.branch_name!.toUpperCase().contains(_text.toUpperCase())).toList();
+                             branch = data.branch!.where((element) => element.branch_address!.toUpperCase().contains(_text.toUpperCase())).toList();
+                          branch = data.branch!.where((element) => element.branch_description!.toUpperCase().contains(_text.toUpperCase())).toList();
                           });
                         },
                         child: Container(

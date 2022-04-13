@@ -52,14 +52,14 @@ class AuthViewModel extends BaseViewModel {
 
     setState(ViewState.Busy);
     var success = await authRepository.checkLogin(strEmail, strPassword, context);
-    setState(ViewState.Idle);
-    if (success) {
-      return true;
-    } else {
+      if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
   // Future<bool> loginWithFscebook(BuildContext context) async{
@@ -168,6 +168,7 @@ class AuthViewModel extends BaseViewModel {
   Future<bool> loginWithApple(BuildContext context) async{
     setState(ViewState.Busy);
     Toast.show('Under maintenance', context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    notifyListeners();
     setState(ViewState.Idle);
     return false;
   }
@@ -177,12 +178,14 @@ class AuthViewModel extends BaseViewModel {
     setState(ViewState.Busy);
     if(strEmail == ''){
       Toast.show('Please complete the form', context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      setState(ViewState.Idle);
+     notifyListeners();
+     setState(ViewState.Idle);
       return false;
     }
 
     if(!RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(strEmail)){
       Toast.show('Harap masukkan email yang valid', context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      notifyListeners();
       setState(ViewState.Idle);
       return false;
     }
@@ -190,39 +193,42 @@ class AuthViewModel extends BaseViewModel {
 
 
     var success = await authRepository.forgotPassword(strEmail, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+     if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
   Future<bool> resendOTP(String strEmail, BuildContext context) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(ViewState.Busy);
     var success = await authRepository.resendOTP(strEmail, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+      if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
   Future<bool> verifyOTP(String strEmail, String strOtp, BuildContext context) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(ViewState.Busy);
     var success = await authRepository.verifyOTP(strEmail, strOtp, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+     if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
   Future<bool> resetPassword(String strEmail, String strPassword, String strConfirmPassword, BuildContext context) async{
@@ -240,13 +246,14 @@ class AuthViewModel extends BaseViewModel {
       return false;
     }
     var success = await authRepository.resetPassword(strEmail, strPassword, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+      if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
   Future<bool> changePassword(String strOldPassword, String strNewPassword, String strConfirmPassword, BuildContext context) async{
@@ -264,21 +271,23 @@ class AuthViewModel extends BaseViewModel {
       return false;
     }
     var success = await authRepository.changePassword(strOldPassword, strNewPassword, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+      if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
 
-  Future<bool> register(String strFullName, String strEmail, String strPhoneNumber, String strPassword, String strConfirmPassword, BuildContext context) async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  Future<bool> register(String strFullName, String strEmail, String strPhoneNumber, String strPassword, String strConfirmPassword, BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(ViewState.Busy);
-    if(strFullName == '' || strEmail == '' || strPhoneNumber == '' || strPassword == '' || strConfirmPassword == ''){
-      Toast.show('Please complete the form', context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    if(strFullName == " " || strEmail == " " || strPhoneNumber == " " || strPassword == " " || strConfirmPassword == " "){
+      Toast.show("Please complete the form", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       setState(ViewState.Idle);
       return false;
     }
@@ -312,26 +321,31 @@ class AuthViewModel extends BaseViewModel {
       setState(ViewState.Idle);
       return false;
     }
+    setState(ViewState.Busy);
     var success = await authRepository.register(strFullName, strEmail, strPhoneNumber, strPassword, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+     if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
 
   Future<bool> activatedAccount(String strEmail, String strOtp, BuildContext context) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(ViewState.Busy);
-    var success = await authRepository.activeatedAccount(strEmail, strOtp, context);
-    setState(ViewState.Idle);
-    if(success){
-      return true;
-    }else{
+    var success = await authRepository.activatedAccount(strEmail, strOtp, context);
+     if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      setState(ViewState.Idle);
       return false;
     }
+
+    setState(ViewState.Idle);
+    return success;
   }
+
+  void init(BuildContext context) {}
 }

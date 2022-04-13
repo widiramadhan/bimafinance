@@ -38,6 +38,7 @@ class CreditApplyView extends StatefulWidget {
   String? companyAddress;
   int? job;
   int? sallary;
+  int? branch;
 
 
   CreditApplyView({
@@ -67,11 +68,12 @@ class CreditApplyView extends StatefulWidget {
 }
 
 class _CreditApplyViewState extends State<CreditApplyView> {
-  final price = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', initialValue: 0);
-  final dp = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.', initialValue: 0);
-  String? tenor = "0";
+  final price = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', initialValue: 0, precision: 0);
+  final dp = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', initialValue: 0, precision: 0);
+  String? tenor;
   String? amount = "0";
   int? productId;
+  int? branchId;
 
   List<String> listTenor = [
     '6',
@@ -155,11 +157,13 @@ class _CreditApplyViewState extends State<CreditApplyView> {
           body: BaseView<CreditViewModel>(
             onModelReady: (data) async {
               await data.getProduct(context);
+              await data.getTenor(context);
+              await data.getBranch(context);
             },
             builder: (context, data, child) {
               return ModalProgress(
                 inAsyncCall: data.state == ViewState.Busy ? true : false,
-                child: data.product == null ? Center(
+                child: data.product == null || data.tenor == null || data.branch == null ? Center(
                     child: CircularProgressIndicator()) : SingleChildScrollView(
                   child: Container(
                     padding: EdgeInsets.all(20),
@@ -205,7 +209,7 @@ class _CreditApplyViewState extends State<CreditApplyView> {
                             maxLines: 1,
                             validation: [
                               RegexRule.emptyValidationRule,
-                            ],
+                            ], 
                           ),
                         ] else ...[
                           MoreField(
@@ -244,13 +248,13 @@ class _CreditApplyViewState extends State<CreditApplyView> {
                               style: TextStyle(
                                 color: Colors.grey,)
                           ),
-                          items: listTenor.map((e) =>
+                          items: data.tenor!.map((e) =>
                               DropdownMenuItem(
                                 child: Text(
-                                  "${e}",
+                                  "${e.tenor_value}",
                                   style: TextStyle(color: Colors.black),
                                 ),
-                                value: e,
+                                value: e.tenor_id,
                               )).toList(),
                           onChanged: (val) {
                             setState(() {
@@ -275,9 +279,38 @@ class _CreditApplyViewState extends State<CreditApplyView> {
                             maxLines: 1,
                             validation: [
                               RegexRule.emptyValidationRule,
-                            ],
+                            ], 
                           ),
+                          
                         ],
+                        SizedBox(height: 20,),
+                          MoreField(
+                            labelText: 'Lokasi Cabang Pengajuan',
+                            hint: Text(
+                                'Pilih Cabang',
+                                style: TextStyle(
+                                  color: Colors.grey,)
+                            ),
+                            items: data.branch!.map((e) =>
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "${e.branch_name}",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  value: e.branch_id,
+                                )).toList(),
+                            onChanged: (val) {
+                              setState(() {
+                                branchId = int.parse(val.toString());
+                              });
+                            },
+                            validator: (val) {
+                              if (val == null) {
+                                return 'Wajib diisi';
+                              }
+                              return '';
+                            },
+                          ),
                       ],
                     ),
                   ),
@@ -294,7 +327,7 @@ class _CreditApplyViewState extends State<CreditApplyView> {
               textColor: Colors.white,
               radius: 20,
               onPressed: () async {
-                if(productId == null || tenor == "0"){
+                if(productId == null || tenor == null || branchId == null){
                   Toast.show('Mohon lengkapi data', context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                 } else {
                   CreditViewModel data = new CreditViewModel();
@@ -304,6 +337,7 @@ class _CreditApplyViewState extends State<CreditApplyView> {
                       price.text,
                       tenor!,
                       dp.text,
+                      branchId!,
                       context);
                   if (check.instalment != null) {
                     Navigator.push(
@@ -331,6 +365,7 @@ class _CreditApplyViewState extends State<CreditApplyView> {
                               companyAddress: widget.companyAddress,
                               job: widget.job,
                               sallary: widget.sallary,
+                              branch: widget.branch,
                             ),
                       ),
                     );

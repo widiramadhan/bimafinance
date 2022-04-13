@@ -6,13 +6,32 @@
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.VIDEO_CAPTURE" />
+    <uses-permission android:name="android.permission.AUDIO_CAPTURE" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.location.gps"/>
+
 
    <application
         android:label="Bima Finance"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+    <provider
+        android:name="com.pichillilorenzo.flutter_inappwebview.InAppWebViewFileProvider"
+        android:authorities="apps.bima.bima_finance.flutter_inappwebview.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true" >
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/provider_paths" />
+    </provider>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

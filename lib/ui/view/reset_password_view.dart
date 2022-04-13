@@ -1,4 +1,5 @@
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/viewmodel/auth_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/widget/dialog_success.dart';
@@ -18,7 +19,7 @@ class ResetPasswordView extends StatefulWidget {
   _ResetPasswordViewState createState() => _ResetPasswordViewState();
 }
 
-bool btnEnabled = false;
+bool btnEnabled = true;
 
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final _txtPasswordController = TextEditingController();
@@ -35,7 +36,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                 brightness: Brightness.dark,
               ),
               body: ModalProgress(
-              inAsyncCall: false,//data.state == ViewState.Busy ?? ViewState.Idle,
+              // inAsyncCall: false,//data.state == ViewState.Busy ?? ViewState.Idle,
+              inAsyncCall: data.state == ViewState.Busy ? true : false,
               child: SafeArea(
                 child: SingleChildScrollView(
                   child: Stack(
@@ -125,7 +127,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                    ),
                                     onPressed: () async {
                                       var reset = await data.resetPassword(widget.email!, _txtPasswordController.text, _txtConfirmationPasswordController.text, context);
-                                      if(reset){
+                                      if(reset == true){
                                         SuccessDialog(
                                           context: context,
                                           title: "Sukses",

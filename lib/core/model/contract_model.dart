@@ -29,6 +29,8 @@ class ContractModel {
   int? totalDebt;
   int? instalment;
   String? createdDate;
+  int? branchId;
+  String? branchName;
 
 
   ContractModel({this.appNo,
@@ -60,7 +62,9 @@ class ContractModel {
     this.totalInterest,
     this.totalDebt,
     this.instalment,
-    this.createdDate});
+    this.createdDate,
+    this.branchId,
+    this.branchName});
 
   ContractModel.fromJson(Map<String, dynamic> json) {
     appNo = json['app_no'];
@@ -93,6 +97,8 @@ class ContractModel {
     totalDebt = json['total_debt'];
     instalment = json['instalment'];
     createdDate = json['created_date'];
+    branchId = json['branch_id'];
+    branchName = json['branch_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -127,6 +133,8 @@ class ContractModel {
     data['total_debt'] = this.totalDebt;
     data['instalment'] = this.instalment;
     data['created_date'] = this.createdDate;
+    data['branch_id'] = this.branchId;
+    data['branch_name'] = this.branchName;
     return data;
   }
 }

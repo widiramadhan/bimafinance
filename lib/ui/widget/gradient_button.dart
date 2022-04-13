@@ -6,7 +6,7 @@ class RaisedGradientButton extends StatelessWidget {
   final Gradient? gradient;
   final double? width;
   final double? height;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const RaisedGradientButton({
     Key? key,

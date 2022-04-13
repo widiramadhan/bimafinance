@@ -5,6 +5,7 @@ import 'package:badges/badges.dart';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/helper/app_helper.dart';
+import 'package:bima_finance/core/model/user_model.dart';
 import 'package:bima_finance/core/viewmodel/home_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/branch_view.dart';
@@ -30,10 +31,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
+import '../../core/model/ostanding_model.dart';
+
 class HomeView extends StatefulWidget {
+  // UserModel? data;
+  // OstandingModel? data;
+
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -45,6 +52,8 @@ class _HomeViewState extends State<HomeView> {
   String? name = "";
   String? email = "";
 
+
+
   Future<bool> checkSessionLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isLogin = prefs.getBool('is_login') ?? false;
@@ -53,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
       setState(() {
         name = prefs.getString('name');
         email = prefs.getString('email');
+        
       });
     }
     return isLogin;
@@ -97,11 +107,13 @@ class _HomeViewState extends State<HomeView> {
           if (snapshot.hasData) {
             return BaseView<HomeViewModel>(
                     onModelReady: (data) async {
+                      // await data.getOstanding(context);
+                      await data.getUser(context);
                       data.init(context);
                     },
                     builder: (context, data, child) {
                       return ModalProgress(
-                      inAsyncCall: false,//data.state == ViewState.Busy ? true : false,
+                      inAsyncCall: data.state == ViewState.Busy ? true : false,
                       child: RefreshIndicator(
                         onRefresh: () async {
                           data.init(context);
@@ -118,7 +130,7 @@ class _HomeViewState extends State<HomeView> {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      //height: 200,
+                                      height: 200,
                                       padding: EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 30),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
@@ -141,14 +153,25 @@ class _HomeViewState extends State<HomeView> {
                                             children: [
                                               data.user == null ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 60, height: 60,) :
                                               GestureDetector(
+                                                // onTap: () {
+                                                //   Navigator.push(
+                                                //       context,
+                                                //       MaterialPageRoute(
+                                                //         builder: (context) =>
+                                                //             PhotoViewerView(path: data.user!.url_images),
+                                                //       )
+                                                //   );
+                                                // },
                                                 onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            PhotoViewerView(path: data.user!.url_images),
-                                                      )
-                                                  );
+                                                  if (data.user!.url_images != null) {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PhotoViewerView(path: data.user!.url_images),
+                                                        )
+                                                    );
+                                                  }
                                                 },
                                                 child: ClipOval(
                                                   child: data.user!.url_images == null || data.user!.url_images == "" ? Image.asset("assets/images/default_avatar.png", fit: BoxFit.cover, width: 60, height: 60,) :
@@ -255,104 +278,105 @@ class _HomeViewState extends State<HomeView> {
                                       ),)
                                     ),
 
-                                    // Container(
-                                    //   width: double.infinity,
-                                    //   height: 80,
-                                    //   padding: EdgeInsets.all(16),
-                                    //   margin: EdgeInsets.only(top: 140, left: 20, right: 20),
-                                    //   decoration: BoxDecoration(
-                                    //       color: Colors.white,
-                                    //       borderRadius: BorderRadius.circular(10),
-                                    //       border: Border.all(width: 1, color: Colors.grey[300]!)
-                                    //   ),
-                                    //   child: Row(
-                                    //     mainAxisAlignment: MainAxisAlignment.start,
-                                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                                    //     children: [
-                                    //       Expanded(
-                                    //         flex: 1,
-                                    //         child: Column(
-                                    //           mainAxisAlignment: MainAxisAlignment.start,
-                                    //           crossAxisAlignment: CrossAxisAlignment.start,
-                                    //           children: [
-                                    //             Row(
-                                    //               mainAxisAlignment: MainAxisAlignment.start,
-                                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                                    //               children: [
-                                    //                 Icon(
-                                    //                   FontAwesomeIcons.moneyBillAlt,
-                                    //                   color: colorPrimary,
-                                    //                   size: 12,
-                                    //                 ),
-                                    //                 SizedBox(width: 10,),
-                                    //                 Text(
-                                    //                   "Tagihan berjalan",
-                                    //                   style: TextStyle(
-                                    //                       color: colorPrimary,
-                                    //                       fontSize: 10
-                                    //                   ),
-                                    //                 )
-                                    //               ],
-                                    //             ),
-                                    //             SizedBox(height: 10,),
-                                    //             Text(
-                                    //               "Rp. 765.000",
-                                    //               style: TextStyle(
-                                    //                   color: Colors.black54,
-                                    //                   fontWeight: FontWeight.bold,
-                                    //                   fontSize: 16
-                                    //               ),
-                                    //             )
-                                    //           ],
-                                    //         ),
-                                    //       ),
-                                    //       Container(
-                                    //         width: 1,
-                                    //         height: 40,
-                                    //         decoration: BoxDecoration(
-                                    //             border: Border.all(width: 1, color: colorPrimary)
-                                    //         ),
-                                    //       ),
-                                    //       Expanded(
-                                    //         flex: 1,
-                                    //         child: Column(
-                                    //           mainAxisAlignment: MainAxisAlignment.start,
-                                    //           crossAxisAlignment: CrossAxisAlignment.end,
-                                    //           children: [
-                                    //             Row(
-                                    //               mainAxisAlignment: MainAxisAlignment.end,
-                                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                                    //               children: [
-                                    //                 Text(
-                                    //                   "Bima Point",
-                                    //                   style: TextStyle(
-                                    //                       color: colorPrimary,
-                                    //                       fontSize: 10
-                                    //                   ),
-                                    //                 ),
-                                    //                 SizedBox(width: 10,),
-                                    //                 Icon(
-                                    //                   FontAwesomeIcons.coins,
-                                    //                   color: colorPrimary,
-                                    //                   size: 12,
-                                    //                 ),
-                                    //               ],
-                                    //             ),
-                                    //             SizedBox(height: 10,),
-                                    //             Text(
-                                    //               "Rp. 100.000",
-                                    //               style: TextStyle(
-                                    //                   color: Colors.black54,
-                                    //                   fontWeight: FontWeight.bold,
-                                    //                   fontSize: 16
-                                    //               ),
-                                    //             )
-                                    //           ],
-                                    //         ),
-                                    //       )
-                                    //     ],
-                                    //   ),
-                                    // )
+                                    Container(
+                                      width: double.infinity,
+                                      height: 80,
+                                      padding: EdgeInsets.all(16),
+                                      margin: EdgeInsets.only(top: 140, left: 20, right: 20),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(width: 1, color: Colors.grey[300]!)
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons.moneyBillAlt,
+                                                      color: colorPrimary,
+                                                      size: 12,
+                                                    ),
+                                                    SizedBox(width: 10,),
+                                                    Text(
+                                                      "Tagihan berjalan",
+                                                      style: TextStyle(
+                                                          color: colorPrimary,
+                                                          fontSize: 10
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(height: 10,),
+                                                Text(
+                                                      isLogin == false ? "-" : "${data.user?.phone == null ? "Dear" : data.user?.phone}",
+                                                      
+                                                      style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 16
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 1,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(width: 1, color: colorPrimary)
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Bima Point",
+                                                      style: TextStyle(
+                                                          color: colorPrimary,
+                                                          fontSize: 10
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 10,),
+                                                    Icon(
+                                                      FontAwesomeIcons.coins,
+                                                      color: colorPrimary,
+                                                      size: 12,
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 10,),
+                                                Text(
+                                                  "Rp. 100.000",
+                                                  style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 16
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                                 SizedBox(height: 20,),
@@ -823,4 +847,3 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-

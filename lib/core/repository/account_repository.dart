@@ -31,7 +31,7 @@ class AccountRepository extends ChangeNotifier {
 
   Future<UserModel?> getUser(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString('token') ?? '';
+    String token = prefs.getString('token') ?? ('fcm');
     try {
       response = await dio.post(Api().getUser,
         options: Options(headers: {
@@ -63,16 +63,17 @@ class AccountRepository extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateUser(String strFullName, String strPhoneNumber, BuildContext context) async {
+  Future<bool> updateUser(String strFullName, String strPhoneNumber, String strNik, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString('token') ?? '';
+    String token = prefs.getString('token') ?? ('fcm');
     try {
       response = await dio.post(Api().updateUser,
           options: Options(headers: {"Accept": "application/json", "Authorization": "Bearer "+token}),
           data: FormData.fromMap({
             'user_id': prefs.getString('user_id'),
             'fullname': strFullName,
-            'phone_number': strPhoneNumber
+            'phone_number': strPhoneNumber,
+            'user_nik' : strNik
           })).timeout(Duration (seconds: Api().timeout));
       if (response?.data['isSuccess'] == true) {
         prefs.setString('message', response?.data['message']);

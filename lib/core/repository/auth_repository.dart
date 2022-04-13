@@ -28,6 +28,7 @@ class AuthRepository extends ChangeNotifier {
           prefs.setString('name', response?.data['data']['fullname']);
           prefs.setString('phone', response?.data['data']['phone']);
           prefs.setString('email', response?.data['data']['email']);
+          // prefs.setString('user_nik', response?.data['data']['user_nik']);
           prefs.setString('token', response?.data['data']['token']);
           prefs.setString('message', response?.data['message']);
           return true;
@@ -37,6 +38,7 @@ class AuthRepository extends ChangeNotifier {
         //     context, MaterialPageRoute(builder: (context) => OtpView(email: strEmail, type: OtpType.Register,)),
         //   );
         // }
+        
       } else {
         prefs.setString('message', response?.data['message']);
         return false;
@@ -216,7 +218,7 @@ class AuthRepository extends ChangeNotifier {
     }
   }
 
-  Future<bool> activeatedAccount(String strEmail, String strOtp, BuildContext context) async {
+  Future<bool> activatedAccount(String strEmail, String strOtp, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       response = await dio.post(Api().activatedUser,

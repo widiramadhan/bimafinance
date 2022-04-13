@@ -46,10 +46,10 @@ class AccountViewModel extends BaseViewModel {
     setState(ViewState.Idle);
   }
 
-  Future<bool> updateProfile(String name, String phone, BuildContext context) async {
+  Future<bool> updateProfile(String name, String phone, String user_nik, BuildContext context) async {
     setState(ViewState.Busy);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var success = await accountRepository.updateUser(name, phone, context);
+    var success = await accountRepository.updateUser(name, phone, user_nik, context);
     if(!success){
       Toast.show(prefs.getString('message'), context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       setState(ViewState.Idle);

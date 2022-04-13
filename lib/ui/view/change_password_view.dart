@@ -152,7 +152,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                                       ),
                                       onPressed: () async {
                                         var changePassword = await data.changePassword(_oldPasswordController.text, _newPasswordController.text, _confirmPasswordController.text, context);
-                                        if(changePassword){
+                                        if(changePassword == true){
                                           SuccessDialog(
                                             context: context,
                                             title: "Sukses",

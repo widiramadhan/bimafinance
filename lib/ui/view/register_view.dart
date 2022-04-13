@@ -1,7 +1,10 @@
 import 'package:bima_finance/core/constant/app_color.dart';
+import 'package:bima_finance/core/constant/otp_type.dart';
+import 'package:bima_finance/core/constant/viewstate.dart';
 import 'package:bima_finance/core/viewmodel/auth_viewmodel.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
+import 'package:bima_finance/ui/view/otp_view.dart';
 import 'package:bima_finance/ui/widget/dialog_success.dart';
 import 'package:bima_finance/ui/widget/gradient_button.dart';
 import 'package:bima_finance/ui/widget/modal_progress.dart';
@@ -15,16 +18,17 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final _txtNameController = TextEditingController();
-  final _txtEmailController = TextEditingController();
-  final _txtPhoneNumberController = TextEditingController();
-  final _txtPasswordController = TextEditingController();
-  final _txtConfirmPasswordController = TextEditingController();
+  final TextEditingController _txtNameController = TextEditingController();
+  final TextEditingController _txtEmailController = TextEditingController();
+  final TextEditingController _txtPhoneNumberController = TextEditingController();
+  final TextEditingController _txtPasswordController = TextEditingController();
+  final TextEditingController _txtConfirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BaseView<AuthViewModel>(
-        onModelReady: (data) {},
+        onModelReady: (data)  {
+        },
         builder: (context, data, child) => Scaffold(
               appBar: AppBar(
                 backgroundColor: colorPrimary,
@@ -32,7 +36,7 @@ class _RegisterViewState extends State<RegisterView> {
                 brightness: Brightness.dark,
               ),
               body: ModalProgress(
-              inAsyncCall: false,//data.state == ViewState.Busy ?? ViewState.Idle,
+              inAsyncCall: data.state == ViewState.Idle,//data.state == ViewState.Busy ?? ViewState.Idle,
                child: SafeArea(
                 child: SingleChildScrollView(
                   child: Stack(
@@ -162,15 +166,19 @@ class _RegisterViewState extends State<RegisterView> {
                                      colors: <Color>[colorPrimary, colorPrimary],
                                    ),
                                     onPressed: () async {
-                                      var register = await data.register(_txtNameController.text, _txtEmailController.text, _txtPhoneNumberController.text, _txtPasswordController.text, _txtConfirmPasswordController.text, context);
-                                      if(register == true) {
+                                    var register = await data.register(
+                                      _txtNameController.text,
+                                      _txtEmailController.text, 
+                                      _txtPhoneNumberController.text, 
+                                      _txtPasswordController.text, 
+                                      _txtConfirmPasswordController.text, 
+                                      context);
+                                      if(register) {
                                         // Navigator.push(
                                         //   context,
                                         //   MaterialPageRoute(
                                         //       builder: (context) =>
-                                        //           OtpView(
-                                        //             email: _txtEmailController.text,
-                                        //             type: OtpType.Register,)),
+                                        //           OtpView(email: _txtEmailController.text, type: OtpType.Register,)),
                                         // );
                                         SuccessDialog(
                                           context: context,
@@ -178,11 +186,11 @@ class _RegisterViewState extends State<RegisterView> {
                                           content: "Selamat akun anda berhasil dibuat",
                                           imageHeight: 100,
                                           imageWidth: 100,
-                                          dialogHeight: 260,
+                                          dialogHeight: 280,
                                           path: ''
                                         );
                                         Future.delayed(
-                                            new Duration(seconds: 1), () {
+                                            new Duration(seconds: 12), () {
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           Navigator.push(

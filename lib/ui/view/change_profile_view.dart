@@ -26,12 +26,14 @@ class _ChangeProfileViewState extends State<ChangeProfileView> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nikController = TextEditingController();
 
   @override
   void initState() {
     _nameController.text = widget.user!.fullname!;
     _phoneNumberController.text = widget.user!.phone!;
     _emailController.text = widget.user!.email!;
+    // _nikController.text = widget.user!.user_nik!;
     super.initState();
   }
 
@@ -124,6 +126,22 @@ class _ChangeProfileViewState extends State<ChangeProfileView> {
                                     ),
                                   ),
                                   SizedBox(
+                                    height: 20,
+                                  ),
+                                  TextFormField(
+                                    controller: _nikController,
+                                    keyboardType: TextInputType.number,
+                                    // enabled: false,
+                                    maxLength: 16,
+                                    decoration: InputDecoration(
+                                      hintText: 'Nomor Induk Kependudukan',
+                                      labelText: 'Nomor Induk Kependudukan',
+                                      counterText: '',
+                                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                    ),
+                                  ),
+                                  SizedBox(
                                     height: 30,
                                   ),
                                   ButtonTheme(
@@ -133,7 +151,7 @@ class _ChangeProfileViewState extends State<ChangeProfileView> {
                                         colors: <Color>[colorPrimary, colorPrimary],
                                       ),
                                       onPressed: () async {
-                                        var update = await data.updateProfile(_nameController.text, _phoneNumberController.text, context);
+                                        var update = await data.updateProfile(_nameController.text, _phoneNumberController.text, _nikController.text, context);
                                         if(update){
                                           SuccessDialog(
                                             context: context,

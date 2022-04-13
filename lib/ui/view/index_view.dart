@@ -92,7 +92,7 @@ class _IndexViewState extends State<IndexView> {
         onTabSelected: _selectedTab,
         items: [
           FABBottomAppBarItem(iconData: FontAwesomeIcons.home, text: 'Home'),
-          FABBottomAppBarItem(iconData: FontAwesomeIcons.fileContract, text: 'Kontrak'),
+          FABBottomAppBarItem(iconData: FontAwesomeIcons.fileContract, text: 'Aplikasi'),
           FABBottomAppBarItem(iconData: FontAwesomeIcons.headset, text: 'Bantuan'),
           FABBottomAppBarItem(iconData: FontAwesomeIcons.userCircle, text: 'Akun'),
         ],

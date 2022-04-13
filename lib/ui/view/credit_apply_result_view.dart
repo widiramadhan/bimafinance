@@ -39,6 +39,7 @@ class CreditApplyResultView extends StatefulWidget {
   String? companyAddress;
   int? job;
   int? sallary;
+  int? branch;
 
 
   CreditApplyResultView({
@@ -62,7 +63,8 @@ class CreditApplyResultView extends StatefulWidget {
     required this.companyPhone,
     required this.companyAddress,
     required this.job,
-    required this.sallary});
+    required this.sallary,
+    required this.branch});
 
 
   @override
@@ -243,6 +245,11 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                                   widget.data!.instalment)}"
                           ),
                           SeparatorWidget(),
+                          DetailWidget(
+                              title: "Cabang Pengajuan",
+                              subtitle: "${widget.data!.branch_name}"
+                          ),
+                          SeparatorWidget(),
                         ],
                       ),
                     ),
@@ -290,6 +297,7 @@ class _CreditApplyResultViewState extends State<CreditApplyResultView> {
                 widget.data!.total_interest,
                 widget.data!.total_debt,
                 widget.data!.instalment,
+                widget.data!.branch_id,
                 context);
             if(success == true) {
               Navigator.pushReplacement(

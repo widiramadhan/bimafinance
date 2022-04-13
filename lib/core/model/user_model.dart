@@ -4,8 +4,10 @@ class UserModel {
   String? email;
   String? phone;
   String? url_images;
+  String? password;
+  String? user_nik;
 
-  UserModel(this.user_id, this.fullname, this.email, this.phone, this.url_images);
+  UserModel(this.user_id, this.fullname, this.email, this.phone, this.url_images, this.user_nik); //this.nik
 
   UserModel.fromJson(Map<String, dynamic> json) {
     user_id = json['user_id'] ?? null;
@@ -13,6 +15,7 @@ class UserModel {
     email = json['email'] ?? "";
     phone = json['phone'] ?? null;
     url_images = json['url_images'] ?? null;
+    user_nik = json['user_nik'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +25,7 @@ class UserModel {
     data['email'] = this.email;
     data['phone'] = this.phone;
     data['url_images'] = this.url_images;
+    data['user_nik'] = this.user_nik;
     return data;
   }
 }

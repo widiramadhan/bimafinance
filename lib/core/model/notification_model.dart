@@ -28,7 +28,7 @@ class NotificationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic> ();
     data['notification_id'] = this.notification_id;
     data['notification_title'] = this.notification_title;
     data['notification_description'] = this.notification_description;

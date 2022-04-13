@@ -17,8 +17,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final _txtEmailController = TextEditingController();
-  final _txtPasswordController = TextEditingController();
+  final TextEditingController _txtEmailController = TextEditingController();
+  final TextEditingController _txtPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -143,10 +143,10 @@ class _LoginViewState extends State<LoginView> {
                                           content: "Selamat datang di aplikasi Bima Finance",
                                           imageHeight: 100,
                                           imageWidth: 100,
-                                          dialogHeight: 260,
+                                          dialogHeight: 280,
                                           path: '',
                                         );
-                                        Future.delayed(new Duration(seconds: 1), () {
+                                        Future.delayed(new Duration(seconds: 2), () {
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           data.checkSessionLogin();

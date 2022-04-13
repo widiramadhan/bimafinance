@@ -60,7 +60,7 @@ class _WorkInformationViewState extends State<WorkInformationView> {
   final _txtCompanyAddress = TextEditingController();
   int? _sallary;
   int? _job;
-
+  
   @override
   void initState() {
     super.initState();
@@ -122,7 +122,7 @@ class _WorkInformationViewState extends State<WorkInformationView> {
           onModelReady: (data) async {
             await data.getJob(context);
             await data.getSallary(context);
-          },
+                      },
           builder: (context, data, child) {
             return ModalProgress(
                 inAsyncCall: data.state == ViewState.Busy ? true : false,
@@ -228,6 +228,7 @@ class _WorkInformationViewState extends State<WorkInformationView> {
                               return '';
                             },
                           ),
+                          
                         ],
                       ),
                     )
@@ -271,6 +272,7 @@ class _WorkInformationViewState extends State<WorkInformationView> {
                       companyAddress: _txtCompanyName.text,
                       job: _job,
                       sallary: _sallary,
+                      
                     ),
                   )
               );

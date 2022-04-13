@@ -1,14 +1,22 @@
 import 'dart:io';
 
 import 'package:bima_finance/core/constant/viewstate.dart';
+import 'package:bima_finance/core/model/branch_model.dart';
 import 'package:bima_finance/core/model/contract_model.dart';
 import 'package:bima_finance/core/model/credit_model.dart';
 import 'package:bima_finance/core/model/job_model.dart';
+import 'package:bima_finance/core/model/ostanding_model.dart';
 import 'package:bima_finance/core/model/product_model.dart';
 import 'package:bima_finance/core/model/sallary_model.dart';
+import 'package:bima_finance/core/model/tenor_model.dart';
+import 'package:bima_finance/core/model/branch_model.dart';
+import 'package:bima_finance/core/repository/branch_repository.dart';
 import 'package:bima_finance/core/repository/credit_repository.dart';
 import 'package:bima_finance/core/repository/master_repository.dart';
+import 'package:bima_finance/core/repository/ostanding_repository.dart';
 import 'package:bima_finance/core/repository/product_repository.dart';
+import 'package:bima_finance/core/repository/tenor_repository.dart';
+import 'package:bima_finance/core/repository/branch_repository.dart';
 import 'package:bima_finance/core/viewmodel/base_viemodel.dart';
 import 'package:bima_finance/locator.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,11 +27,19 @@ class CreditViewModel extends BaseViewModel {
   ProductRepository productRepository = locator<ProductRepository>();
   CreditRepository creditRepository = locator<CreditRepository>();
   MasterRepository masterRepository = locator<MasterRepository>();
+  TenorRepository tenorRepository = locator<TenorRepository>();
+  BranchRepository branchRepository = locator<BranchRepository>();
+  // OstandingRepository ostandingRepository = locator<OstandingRepository>();
   List<ProductModel>? product;
   List<JobModel>? job;
   List<SallaryModel>? sallary;
   List<ContractModel>? contract;
+  List<TenorModel>? tenor;
+  List<BranchModel>? branch;
+  // List<OstandingModel>? ostanding;
   CreditModel? credit;
+  // List<TenorModel>? tenor;
+  // List<BranchModel>? branch;
 
 
   Future getProduct(BuildContext context) async {
@@ -54,12 +70,34 @@ class CreditViewModel extends BaseViewModel {
     setState(ViewState.Idle);
   }
 
+  Future getTenor(BuildContext context) async {
+    setState(ViewState.Busy);
+    tenor = await tenorRepository.getTenor(context);
+    notifyListeners();
+    setState(ViewState.Idle);
+  }
+
+   Future getBranch(BuildContext context) async {
+    setState(ViewState.Busy);
+    branch = await branchRepository.getBranch(context);
+    notifyListeners();
+    setState(ViewState.Idle);
+  }
+
+  // Future getOstanding(BuildContext context) async {
+  //   setState(ViewState.Busy);
+  //   ostanding = await ostandingRepository.getOstanding(context);
+  //   notifyListeners();
+  //   setState(ViewState.Idle);
+  // }
+
   Future<CreditModel> simulationCredit(
       int productId,
       String loanAmount,
       String price,
       String tenor,
       String dp,
+      int branchId,
       BuildContext context) async {
     setState(ViewState.Busy);
     int amount = int.parse(loanAmount.replaceAll("Rp. ", "").replaceAll(".", ""));
@@ -75,6 +113,7 @@ class CreditViewModel extends BaseViewModel {
         prices,
         int.parse(tenor),
         downPayment,
+        branchId,
         context);
     notifyListeners();
     setState(ViewState.Idle);
@@ -108,6 +147,7 @@ class CreditViewModel extends BaseViewModel {
       int? totalInterest,
       int? totalDebt,
       int? installment,
+      int? branchId,
       BuildContext context
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -140,6 +180,7 @@ class CreditViewModel extends BaseViewModel {
         totalInterest,
         totalDebt,
         installment,
+        branchId,
         context);
     setState(ViewState.Idle);
     if (success) {

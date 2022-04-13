@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/constant/web_url.dart';
 import 'package:bima_finance/ui/view/branch_view.dart';
+import 'package:bima_finance/ui/view/faq_view.dart';
 import 'package:bima_finance/ui/view/pdf_view.dart';
 import 'package:bima_finance/ui/view/webview_view.dart';
 import 'package:bima_finance/ui/widget/menu.dart';
@@ -16,6 +17,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../widget/separator.dart';
 
 class HelpView extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class _HelpViewState extends State<HelpView> {
       await launch(url);
     } else {
       Toast.show("Could not launch whatsapp, please install whatsapp in store", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      //throw 'Could not launch $url';
+      // throw 'Could not launch $url';
     }
   }
 
@@ -214,6 +217,20 @@ class _HelpViewState extends State<HelpView> {
                                 title: "Pengkinian Data Debitur",
                                 url: WebURL().pengkinianDataDebitur,
                               ),
+                            ),
+                          );
+                        }
+                    ),
+
+                    SeparatorWidget(),
+                     MenuWidget(
+                        title: "FAQ (Frequently Asked Questions)",
+                        icon: FontAwesomeIcons.headset,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FaqView(),
                             ),
                           );
                         }

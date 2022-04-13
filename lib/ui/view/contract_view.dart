@@ -43,7 +43,7 @@ class _ContractViewState extends State<ContractView> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kontrak", style: TextStyle(color: colorPrimary),),
+        title: Text("Aplikasi", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 2,
@@ -153,6 +153,13 @@ class _ContractViewState extends State<ContractView> with SingleTickerProviderSt
                                                   fontWeight: FontWeight.bold
                                               ),
                                             ),
+                                            // Text(
+                                            //   "${data.contract![index].nik!.toUpperCase()}",
+                                            //   style: TextStyle(
+                                            //       fontSize: 16,
+                                            //       fontWeight: FontWeight.bold
+                                            //   ),
+                                            // ),
                                             SizedBox(height: 10,),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.start,
@@ -175,6 +182,8 @@ class _ContractViewState extends State<ContractView> with SingleTickerProviderSt
                                                     decoration: BoxDecoration(
                                                         color:
                                                         data.contract![index].statusName!.toLowerCase() == 'submission' ? colorPrimary :
+                                                        data.contract![index].statusName!.toLowerCase() == 'Rejected' ? Colors.red :
+                                                        data.contract![index].statusName!.toLowerCase() == 'non active' ? Colors.red :
                                                         data.contract![index].statusName!.toLowerCase() == 'on review' ? colorSecondary :
                                                         data.contract![index].statusName!.toLowerCase() == 'approved' ? Colors.green :
                                                         Colors.red,

@@ -77,7 +77,7 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
                     SeparatorWidget(),
                     DetailWidget(
                         title: "Jangka Waktu",
-                        subtitle: "${widget.data!.tenor}"
+                        subtitle: "${widget.data!.tenor}" + " Bulan"
                     ),
                     SeparatorWidget(),
                     DetailWidget(
@@ -91,6 +91,11 @@ class _CreditSimulationDetailViewState extends State<CreditSimulationDetailView>
                         subtitle: "Rp. ${formatter.format(
                             widget.data!.instalment)}"
                     ),
+                    SeparatorWidget(),
+                          DetailWidget(
+                              title: "Cabang Pengajuan",
+                              subtitle: "${widget.data!.branch_name}"
+                          ),
                     SeparatorWidget(),
                     DetailWidget(
                         title: "Skema Pembayaran",

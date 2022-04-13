@@ -8,7 +8,11 @@ class CreditModel {
   int? interest_per_month;
   int? total_interest;
   int? total_debt;
+  int? branch_id;
+  String? branch_name;
   int? instalment;
+  // int? branch_id;
+  // String? branch_name;
   List<DataInstalment>? data_instalment;
 
 
@@ -22,7 +26,10 @@ class CreditModel {
     this.interest_per_month,
     this.total_interest,
     this.total_debt,
+    this.branch_id,
+    this.branch_name,
     this.instalment,
+  
     this.data_instalment});
 
   CreditModel.fromJson(Map<String, dynamic> json) {
@@ -35,7 +42,11 @@ class CreditModel {
     interest_per_month = json['interest_per_month'];
     total_interest = json['total_interest'];
     total_debt = json['total_debt'];
+    branch_id = json['branch_id'];
+    branch_name = json ['branch_name'];
     instalment = json['instalment'];
+    // branch_id = json['branch_id'];
+    // branch_name = json ['branch_name'];
     if (json['data_instalment'] != null) {
       data_instalment = [];
       json['data_instalment'].forEach((v) {
@@ -55,7 +66,11 @@ class CreditModel {
     data['interest_per_month'] = this.interest_per_month;
     data['total_interest'] = this.total_interest;
     data['total_debt'] = this.total_debt;
+    data['branch_id'] = this.branch_id;
+    data['branch_name'] = this.branch_name;
     data['instalment'] = this.instalment;
+    // data['branch_id'] = this.branch_id;
+    // data['branch_name'] = this.branch_name;
     data['data_instalment'] = this.data_instalment;
     return data;
   }

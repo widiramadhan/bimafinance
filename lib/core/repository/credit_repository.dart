@@ -15,7 +15,7 @@ class CreditRepository extends ChangeNotifier {
   Response? response;
   Dio dio = new Dio();
 
-  Future<CreditModel?> simulationCredit(int productId, int loanAmount, int price, int tenor, int dp, BuildContext context) async {
+  Future<CreditModel?> simulationCredit(int productId, int loanAmount, int price, int tenor, int dp, int branchId, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       response = await dio.post(Api().simulationCredit,
@@ -26,6 +26,7 @@ class CreditRepository extends ChangeNotifier {
             'price': price,
             'tenor': tenor,
             'dp': dp,
+            'branch_id': branchId,
           })).timeout(Duration (seconds: Api().timeout));
       if (response?.data['isSuccess'] == true) {
         notifyListeners();
@@ -72,6 +73,7 @@ class CreditRepository extends ChangeNotifier {
       int? totalInterest,
       int? totalDebt,
       int? installment,
+      int? branchId,
       BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
@@ -111,6 +113,7 @@ class CreditRepository extends ChangeNotifier {
       print("total_interest -> ${totalInterest}");
       print("total_debt -> ${totalDebt}");
       print("instalment -> ${installment}");
+      print("branch_id -> ${branchId}");
 
       response = await dio.post(Api().applyCredit,
           options: Options(headers: {
@@ -144,6 +147,7 @@ class CreditRepository extends ChangeNotifier {
             'total_interest': totalInterest,
             'total_debt': totalDebt,
             'instalment': installment,
+            'branch_id' : branchId,
           })).timeout(Duration (seconds: Api().timeout));
       if (response?.data['isSuccess'] == true) {
         prefs.setString('message', response?.data['message']);

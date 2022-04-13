@@ -1,3 +1,4 @@
+// @dart=2.9
 
 import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/locator.dart';

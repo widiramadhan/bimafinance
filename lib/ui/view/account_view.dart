@@ -5,9 +5,11 @@ import 'package:bima_finance/core/constant/app_color.dart';
 import 'package:bima_finance/core/constant/web_url.dart';
 import 'package:bima_finance/core/viewmodel/account_viewmodel.dart';
 import 'package:bima_finance/ui/view/about_apps_view.dart';
+import 'package:bima_finance/ui/view/absensi_karyawan.dart';
 import 'package:bima_finance/ui/view/base_view.dart';
 import 'package:bima_finance/ui/view/change_password_view.dart';
 import 'package:bima_finance/ui/view/change_profile_view.dart';
+import 'package:bima_finance/ui/view/cmo_view.dart';
 import 'package:bima_finance/ui/view/contract_view.dart';
 import 'package:bima_finance/ui/view/login_view.dart';
 import 'package:bima_finance/ui/view/photo_viewer_view.dart';
@@ -108,7 +110,7 @@ class _AccountViewState extends State<AccountView> {
         title: Text("Akun", style: TextStyle(color: colorPrimary),),
         centerTitle: true,
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
         brightness: Brightness.light,
       ),
       body: FutureBuilder(
@@ -193,7 +195,7 @@ class _AccountViewState extends State<AccountView> {
                 ).then((value) async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   if(prefs.getBool('is_login') == true){
-                    data.getUser(context);
+                    await data.getUser(context);
                     setState(() {
                       isLogin = true;
                     });
@@ -390,7 +392,7 @@ class _AccountViewState extends State<AccountView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChangeProfileView(user: data.user!),
+                          builder: (context) => ChangeProfileView(user: data.user),
                         ),
                       ).then((value) async {
                         await data.getUser(context);
@@ -410,6 +412,39 @@ class _AccountViewState extends State<AccountView> {
                       );
                     },
                   ),
+
+                  _separator(),
+                  MenuWidget(
+                    title: "CMO",
+                    icon: FontAwesomeIcons.userCheck,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>Cmo(
+                            title: "CMO",
+                            // url: "http://101.255.66.82/api_teken/login.php"
+                          ))
+                        );    
+                    }
+                  ),
+
+                  _separator(),
+                  MenuWidget(
+                    title: "Presensi",
+                    icon: FontAwesomeIcons.userPlus,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Absensi(
+                            title: "Presensi",
+                          )
+                        )
+                      );
+                    }
+                  ),
+                  
                   // _separator(),
                   // MenuWidget(
                   //   title: "Daftar Dokumen",
@@ -513,6 +548,7 @@ class _AccountViewState extends State<AccountView> {
                           prefs.remove('user_id');
                           prefs.remove('email');
                           prefs.remove('token');
+                          prefs.remove('nik');
                           prefs.remove('is_login');
 
 

@@ -68,8 +68,8 @@ class _SplashScreenViewState extends State<SplashScreenView>
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/bg_splash.png'),
-                  fit: BoxFit.fill
+                  image: AssetImage('assets/images/bg_splash.jpeg'),
+                  fit: BoxFit.cover
                 )
               ),
             ),
@@ -86,6 +86,21 @@ class _SplashScreenViewState extends State<SplashScreenView>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset("assets/images/logo.png", width: animation!.value * 200, height: animation!.value * 200,),
+                ],
+              ),
+            ),
+
+             Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+
+                    Image.asset("assets/images/logo_ojk.png", width: 150, height: 150,),
+                    Image.asset("assets/images/logo_appi.png", width: 150, height: 150,),
+
                 ],
               ),
             ),
